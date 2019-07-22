@@ -1,9 +1,7 @@
 # Basic
-title: 北岛向南的老店
-subtitle: 愛してる
-#welcome_message: <a href="https://github.com/onevcat/vno-jekyll" target="_blank">Download the theme</a>
-description: 为你，千千万万遍。
-#creator: <a href="http://onev.cat">@onevcat</a>
+title: Ke Xiang
+subtitle: Code Create Life
+description: Do more, Know more, Be more!
 
 url: "http://fi-null.github.io"
 
@@ -22,8 +20,8 @@ blog_button:
 
 # Navigation buttons in the front page.
 nav:
-    - {title: Projects, description: My Projects, url: 'http://project.onevcat.com'}
-    # - {title: Another Button, description: A button, url: 'http://example.com'}
+    - {title: 简历, description: 简历, url: 'https://fi-null.github.io/resume/'}
+    - {title: 关于, description: 关于, url: 'https://dmego.me/about/'}
 
 # Pagination
 plugins: [jekyll-paginate]
