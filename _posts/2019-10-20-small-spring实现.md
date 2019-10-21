@@ -1,12 +1,10 @@
 ---
 layout: post    
 title: "不如写个small-Spring"   
-date: 2018-04-26    
+date: 2019-10-20    
 description: "不如写个small-Spring"  
-tag: Tool   
+tag: Spring   
 ---
-
-# 不如写个small-Spring？
 
 ## IOC
 
@@ -195,7 +193,6 @@ https://mp.weixin.qq.com/s?__biz=MzI4Njg5MDA5NA==&mid=2247483954&idx=1&sn=b34e38
 静态代理模式
 
 
-
 通过构造函数注入的方式，将被代理类B的实例b注入Proxy中，然后Proxy实现A接口a方法时，在调用b.a()之前之后都可以写自己的代理逻辑代码。
 
 动态代理模式
@@ -206,7 +203,7 @@ https://mp.weixin.qq.com/s?__biz=MzI4Njg5MDA5NA==&mid=2247483954&idx=1&sn=b34e38
 
 
 分解操作：
-
+```java
 public static void main(String[] args) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
 ​    //指定被代理类实例
 ​    Car target = new Car();
@@ -226,27 +223,10 @@ public static void main(String[] args) throws NoSuchMethodException, IllegalAcce
 ​    });
 ​    car.running();
 }
-1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-一句话版本：
+```
 
+一句话版本：
+```java
 public static void main(String[] args) {
 ​    Car target = new Car();
 ​    Drivebale car =  (Drivebale) Proxy.newProxyInstance(target.getClass().getClassLoader(), target.getClass().getInterfaces(), new InvocationHandler() {
@@ -260,19 +240,8 @@ public static void main(String[] args) {
 ​    });
 ​    car.running();
 }
-1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
+```
+
 静态代理和动态代理的区别
 
 
@@ -292,16 +261,13 @@ public static void main(String[] args) {
 
 https://blog.csdn.net/xiaokang123456kao/article/details/76228684
 
+```java
 SqlSession session = sqlSessionFactory.openSession();  
 //获取mapper接口的代理对象  
 UserMapper userMapper = session.getMapper(UserMapper.class);  
 //调用代理对象方法  
 User user = userMapper.findUserById(27);    
-1
-2
-3
-4
-5
+```
 比如UserMapper这个接口，如果要用静态代理，就必须手动写一个实现该接口的代理类，如果你有很多个接口，就要写很多个代理类，工作量很大。但是采用动态代理后，XXXMapperProxy通过反射实现XxxMapper接口内方法并创建构造函数，创建后在invoke中实现逻辑。
 
 理解AOP
@@ -345,6 +311,7 @@ AOP Alliance 是AOP的接口标准，定义了 AOP 中的基础概念(Advice、C
 第7步：使用JDK动态代理实现AOP织入
 这一步我们就是利用之前说到的动态代理模式，几乎一模一样的完成织入。想一下，我们实现动态代理要用Proxy.newInstance，我们可以封装一个动态代理类，就叫做JdkDynamicAopProxy implements InvocationHandler。由之前的动态代理知识可知，实现了InvocationHandler就必须实现invoke方法，那我们这样写：
 
+```java
 @Override
 public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 ​    //        MethodInterceptor methodInterceptor = advised.getMethodInterceptor();
@@ -353,16 +320,7 @@ public Object invoke(Object proxy, Method method, Object[] args) throws Throwabl
 ​        Object result = method.invoke(advised.getTargetSource().getTarget(),args);
 ​        System.out.println("方法结束");
 ​        return result;
-}
-1
-2
-3
-4
-5
-6
-7
-8
-9
+```
 这样就可以将所有代理方法前后打印两句话了。我们通过getProxy返回构造好的代理类：return Proxy(getClass.getClassLoader,new Class[]{target.getClass},this。因为本类就是InvocationHandler的实现类，因此最后一个用this即可。
 
 我们知道想成功代理一个实例需要2个要素1.被代理的实例2.被代理的接口。我们用AdvisedSupport进行封装，包括target、targetClass（其实应该是targetInterface）（前两个被封装进TargetSource，而TargetSource被封装进AdvisedSupport）、methodInterceptor.等一下，methodInterceptor是个什么吊参数？
@@ -383,6 +341,7 @@ ThrowsAdvice,切点的目标方法出现异常时调用
 
 这一步到此为止可以做到：1.写一个实现MethodInterceptor的实现类，实现增强功能。2.实现对接口方法的代理。
 
+```java
 // 1. 设置被代理对象(Joinpoint)
 AdvisedSupport advisedSupport = new AdvisedSupport();
 TargetSource targetSource = new TargetSource(car,Driveable.class);
@@ -399,24 +358,10 @@ Driveable carProxy = (Driveable)jdkDynamicAopProxy.getProxy();
 
 // 4. 基于AOP的调用
 carProxy.running();
-1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-给出一个AOP采用的动态代理方式的小demo
+```
 
+给出一个AOP采用的动态代理方式的小demo
+```java
 class ReflectMethodInvocation implements MethodInvocation{
 ​    private Method method;
 ​    private Object target;
@@ -474,63 +419,8 @@ public class JdkAopNew {
 ​        drivebale.running();
 ​    }
 }
-1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-31
-32
-33
-34
-35
-36
-37
-38
-39
-40
-41
-42
-43
-44
-45
-46
-47
-48
-49
-50
-51
-52
-53
-54
-55
-56
-57
+```
+
 第8步：使用AspectJ管理切面
 第7步解决了怎么织入的问题，下面就是在哪里织入？Spring采用了AspectJ风格的标示性语句来表示在哪些位置进行织入，即哪些位置是point cut。类似下面的语句<aop:pointcut id="pointcut" expression="execution(public int aopxml.Calculator.*(int, int ))"/>。Spring可以对类和方法做插入，因此我们也要实现对类和方法表示point cut的功能。
 
@@ -543,14 +433,13 @@ AspectJExpressionPintcut中要做这样几件事1.获得String expression即Aspe
 
 pointcutExpression是创建好了，但是有什么用呢？这个类可以用于匹配方法和类。
 
+```java
 //匹配类
 pointcutExpression.couldMatchJoinPointsInType(targetClass);
 //匹配方法
 ShadowMatch shadowMatch = pointcutExpression.matchesMethodExecution(method);
-1
-2
-3
-4
+```
+
 所以其实AspectJ包已经帮你做好了解析和匹配的事儿，只不过你不会用他的编译器，你用动态代理的方式实现了织入。
 
 
@@ -566,6 +455,7 @@ BPP接口实例要率先被实例化，并且实例化过程几乎不会存在�
 第9.2步：将AOP融入Bean的创建过程
 第7和第8步我们已经完成了AOP的point识别和识别后的织入，但是两个功能没有整合，同时也没有和Spring的IOC整合起来。目的是为了，IOC给我们的容器已经不再是我们自己写的实例，而是被织入了advice的实例——如果该类在pointcut则返回new JdkDynamicAopProxy，否则返回bean。
 
+```java
 public Object postProcessAfterInitialization(Object bean, String beanName) throws Exception {
 ​	if (bean instanceof AspectJExpressionPointcutAdvisor) {
 ​		return bean;
@@ -589,29 +479,7 @@ public Object postProcessAfterInitialization(Object bean, String beanName) throw
 	}
 	return bean;
 }
-1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
+```
 
 
 第一幕：和9.1非常类似的，仅有标红出不同。因为AspectJAwareAdvisorAutoProxyCreator implements BBP，BeanFactoryWare，因此不同仅仅是，因为实现了BeanFactoryAware接口，因此调用setFactory方法。这一步的目的是为了是的AspectAwareAdvisorAutoProxyCreator中具有beanFactory，方便从中获取AspectJExpressionPointcutAdvisor.class类的实例。
@@ -700,6 +568,8 @@ https://github.com/code4craft/tiny-spring/issues/17
 CGlib的原理是通过对字节码的操作，可以动态的生成一个目标实例类的子类，这个子类和目标实例的子类相同的基础上，还增加了代理代码或者叫advice。代理类 = 被代理类+增强逻辑
 
 CGlib动态代理
+
+```java
 class Student{
 ​    private String name = "zhang san";
 
@@ -735,42 +605,9 @@ public class CglibMthodTwo implements MethodInterceptor {
     }
 
 }
-1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-31
-32
-33
-34
-35
+```
 JDK动态代理。
+```java
 public class JdkDynamicAopProxy extends AbstractAopProxy implements InvocationHandler {
 
     public JdkDynamicAopProxy(AdvisedSupport advised) {
@@ -798,33 +635,8 @@ public class JdkDynamicAopProxy extends AbstractAopProxy implements InvocationHa
     }
 
 }
-1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
+```
+
 与JDK动态代理的区别
 
 原理上JDK没有修改字节码，而是采用$proxyn extend Proxy implements InterfaceXXX的方式创建了一个被代理接口的实现类，然后在运行期写class文件，再用classloader加载。而CGlib却是操作字节码，将被代理类的字节码增强成一个子类，因此要导入ASM包。
@@ -834,7 +646,7 @@ Advice即代理代码的实现上，JDK动态代理可以在InvocationHandler中
 为什么说运行方法上的差异很重要呢，因为这会导致步骤9的代码不可复用。因为我们原来写的都是JDK代理类实例的那一套代码，如果用CGlib的话，就无法通过注入org.aopalliance.intercept.MethodInterceptor的方式实现增强，而是注入cglib的MethodInterceptor，通过setCallback可以设置不同methodInterceptor。有没有一种办法，让我们配置一种org.aopalliance.intercept.MethodInterceptor，在CGlib的情况下也可以调用它呢？
 
 有啊，只要我们在cglib的methodInterceptor接口实现的intercept方法中调用org.aopalliance.intercept.MethodInterceptor不就好了。
-
+```java
 private static class DynamicAdvisedInterceptor implements MethodInterceptor {
 
     private AdvisedSupport advised;
@@ -857,33 +669,14 @@ private static class DynamicAdvisedInterceptor implements MethodInterceptor {
         return new CglibMethodInvocation(advised.getTargetSource().getTarget(), method, args, proxy).proceed();
     }
 }
-1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
+```
+
 现在只剩下一个疑问了，因为么要写一个ReflectMothodInvocation的子类？因为intercept有4个入参，所以我们交给下一步处理的时候也要有4个入参，相当于增强了一下功能，当然你这边不改也没问题，就当做JDK那个版本就行。
 
 第11步：通过三级缓存彻底解决循环依赖
 废话少说，先看结果
 
+```java
 @Test
 public void testXuhuanyilai() throws Exception {
 ​    // --------- helloWorldService without AOP
@@ -904,32 +697,15 @@ Invocation of Method running end! takes 45777 nanoseconds.
 Invocation of Method living start!
 address is living
 Invocation of Method living end! takes 56000 nanoseconds.
-1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
+```
+
 实验结果表示，我已经解决了第9.3步中说到的AOP情况下，循环依赖导致a ref b, b ref a时，创建实例时，b.a指向的是空实例a，而不是代理实例a。
 
 解决方法。
 
 三层缓存。
 
+```java
 protected Map<String,Object> secondCache = new HashMap();
 protected Map<String,Object> thirdCache = new HashMap<>();
 protected Map<String,Object> firstCache = new HashMap<>();
@@ -945,15 +721,12 @@ protected Object doCreateBean(String name,BeanDefinition beanDefinition) throws 
 ​    applyPropertyValues(bean,beanDefinition);
 ​    return bean;
 }
-1
-2
-3
-4
-5
-6
-7
+```
+
+
 a ref b, b ref a情况下，在b创建时，a还只是空构造实例，因此用secondCache去保存所有field中指向空实例的那些实例，即保存b。
 
+```java
 for(PropertyValue propertyValue:mbd.getPropertyValues().getPropertyValues()){
 Object value = propertyValue.getValue();
 if(value instanceof BeanReference){//如果是ref，就创建这个ref
@@ -964,28 +737,18 @@ if(value instanceof BeanReference){//如果是ref，就创建这个ref
 ​        secondCache.put(beanReference.getName(),bean);//标注a ref b,b ref a中，b是后被循环引用的
 ​    }
 }
-1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-firstCache用于保存所有最终被生成的实例.
+```
 
+firstCache用于保存所有最终被生成的实例.
+```java
 initializeBean():
 if(thirdCache.containsKey(name)){//空构造实例如果被AOP成代理实例，则放入三级缓存，说明已经构建完毕
 ​    firstCache.put(name,bean);
 }
-1
-2
-3
-4
+```java
 因此，当执行完方法beanFactory.preInstantiateSingletons();后，thirdCache保存了所有空构造实例及名称，secondCache保存了所有可能需要重新设置ref的实例及名称，first保存了所有最终生成的实例和名称。在firstcache与third中，必然存放了所有的bean，在second中只存放因循环依赖所以创建时ref了不完整对象的那些。在创建了所有实力后，通过checkoutAll方法对secondCache中的实例进行重置依赖。
 
+```java
 protected void onRefresh() throws Exception{
 ​    beanFactory.preInstantiateSingletons();
 ​    checkoutAll();
@@ -1031,51 +794,7 @@ private void resetReference(String invokeBeanName,BeanDefinition beanDefinition)
 ​        }
 ​    }
 }
-1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-31
-32
-33
-34
-35
-36
-37
-38
-39
-40
-41
-42
-43
-44
-45
+```
 正如在9.3中说的那样，只有在开启全局cglib的情况下才可以完成本实验，如果开启jdk代理模式或者jdk代理+cglib都不会解决本bug。
 
 小结
