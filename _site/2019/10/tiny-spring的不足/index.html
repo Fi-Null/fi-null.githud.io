@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <title>完善tiny-Spring中几个不足之处</title>
+  <meta name="description" content="不足一：未实现构造器注入">
+  <meta name="author" content="Wei Wang">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="完善tiny-Spring中几个不足之处">
+  <meta name="twitter:description" content="不足一：未实现构造器注入">
+  
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="完善tiny-Spring中几个不足之处">
+  <meta property="og:description" content="不足一：未实现构造器注入">
+  
+  <link rel="icon" type="image/png" href="/assets/images/favicon.png" />
+  <link href="/assets/images/favicon.png" rel="shortcut icon" type="image/png">
+  
+  <link rel="stylesheet" href="/css/main.css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link rel="canonical" href="http://localhost:4000/2019/10/tiny-spring%E7%9A%84%E4%B8%8D%E8%B6%B3/">
+  <link rel="alternate" type="application/rss+xml" title="Ke Xiang" href="http://localhost:4000/feed.xml">
+  
+  <meta name="google-site-verification" content="1-1ZlHoRvM0T2FqPbW2S-qLgYXN6rsn52kErlMPd_gw" />
+  
+</head>
+
+
+  <body>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="fa fa-list btn-mobile-menu__icon"></i>
+        <i class="fa fa-angle-up btn-mobile-close__icon hidden"></i>
+    </span>
+    
+    <header class="panel-cover panel-cover--collapsed" style="background-image: url('/assets/images/background-cover.jpg')">
+  <div class="panel-main">
+
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        <a href="/#blog" title="前往 Ke Xiang 的主页" class="blog-button"><img src="/assets/images/avatar.jpg" width="80" alt="Ke Xiang logo" class="panel-cover__logo logo" /></a>
+        <h1 class="panel-cover__title panel-title"><a href="/#blog" title="link to homepage for Ke Xiang" class="blog-button">Ke Xiang</a></h1>
+        
+        <span class="panel-cover__subtitle panel-subtitle">Code Create Life</span>
+        
+        <hr class="panel-cover__divider" />
+        <p class="panel-cover__description">Do more, Know more, Be more!</p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+    
+        
+        <div class="navigation-wrapper">
+          <div>
+            <nav class="cover-navigation cover-navigation--primary">
+              <ul class="navigation">
+                <li class="navigation__item"><a href="/" title="home" class="blog-button">Home</a></li>
+                <li class="navigation__item"><a href="/#blog" title="Visit blog" class="blog-button">Blog</a></li>
+                
+                  <li class="navigation__item"><a href="https://fi-null.github.io/resumeWeb/" target="_blank" title="resume">Resume</a></li>
+                
+                 <!-- <li class="navigation__item"><a href="/about" title="about" class="blog-button">About</a></li> -->
+              </ul>
+            </nav>
+          </div>
+          
+          <div><nav class="cover-navigation navigation--social">
+  <ul class="navigation">
+
+  
+  <!-- Weibo -->
+  <li class="navigation__item">
+    <a href="http://weibo.com/fi-null" title="@fi-null 的微博" target="_blank">
+      <i class='social fa fa-weibo'></i>
+      <span class="label">Weibo</span>
+    </a>
+  </li>
+  
+
+  
+  <!-- Github -->
+  <li class="navigation__item">
+    <a href="https://github.com/fi-null" title="@fi-null 的 Github" target="_blank">
+      <i class='social fa fa-github'></i>
+      <span class="label">Github</span>
+    </a>
+  </li>
+  
+  
+  
+  <!-- Twitter -->
+  <li class="navigation__item">
+    <a href="http://twitter.com/fi-null" title="@fi-null" target="_blank">
+      <i class='social fa fa-twitter'></i>
+      <span class="label">Twitter</span>
+    </a>
+  </li>
+  
+
+  
+  <!-- Google Plus -->
+  <li class="navigation__item">
+    <a href="https://plus.google.com/107108267983477358170" rel="author" title="Google+" target="_blank">
+      <i class='social fa fa-google-plus-square'></i>
+      <span class="label">Google Plus</span>
+    </a>
+  </li>
+  
+
+  <!-- RSS -->
+  <li class="navigation__item">
+    <a href="/feed.xml" rel="author" title="RSS" target="_blank">
+      <i class='social fa fa-rss'></i>
+      <span class="label">RSS</span>
+    </a>
+  </li>
+
+  
+  <!-- Email -->
+  <li class="navigation__item">
+    <a href="mailto:xiangke123401@gmail.com" title="Contact me">
+      <i class='social fa fa-envelope'></i>
+      <span class="label">Email</span>
+    </a>
+  </li>
+  
+
+  </ul>
+</nav>
+</div>
+        </div>
+      </div>
+    </div>
+    
+    
+    <div class="panel-cover--overlay cover-clear"></div>
+    
+  </div>
+</header>
+
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            <article class="post-container post-container--single" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="2019-10-21 00:00:00 +0800" itemprop="datePublished" class="post-meta__date date">2019-10-21</time> &#8226; <span class="post-meta__tags tags">Spring</span>
+    </div>
+    <h1 class="post-title">完善tiny-Spring中几个不足之处</h1>
+  </header>
+
+  <section class="post">
+    <h3 id="不足一未实现构造器注入">不足一：未实现构造器注入</h3>
+
+<ul>
+  <li>
+    <p>实现功能：</p>
+
+    <div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="nt">&lt;bean</span> <span class="na">id=</span><span class="s">"carByConstructor"</span> <span class="na">class=</span><span class="s">"com.sonihr.Car"</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;constructor-arg</span> <span class="na">value=</span><span class="s">"constructor"</span><span class="nt">/&gt;</span>
+      <span class="nt">&lt;constructor-arg</span> <span class="na">ref=</span><span class="s">"address2"</span><span class="nt">/&gt;</span>
+  <span class="nt">&lt;/bean&gt;</span>
+</code></pre></div>    </div>
+
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="nd">@Test</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">testConstructor</span><span class="o">()</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+      <span class="nc">ApplicationContext</span> <span class="n">applicationContext</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ClassPathXmlApplicationContext</span><span class="o">(</span><span class="s">"tinyioc.xml"</span><span class="o">);</span>
+      <span class="nc">Driveable</span> <span class="n">car</span> <span class="o">=</span> <span class="o">(</span><span class="nc">Driveable</span><span class="o">)</span> <span class="n">applicationContext</span><span class="o">.</span><span class="na">getBean</span><span class="o">(</span><span class="s">"carByConstructor"</span><span class="o">);</span>
+      <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">car</span><span class="o">);</span>
+  <span class="o">}</span>
+  <span class="c1">//输出：Car{name='constructor', address=Address{local='beijingByConstructor', car=null}}</span>
+</code></pre></div>    </div>
+
+    <ul>
+      <li>本demo暂时未实现对构造器类型的判断，只是简单按照构造器参数个数来匹配，当然想判断也很简单，都是逻辑代码而已。</li>
+      <li>构造器注入无法解决循环依赖的问题，A构造器ref b，B构造器 ref a，当A构造器ref b的时候，转而去构造b，但是b的构造器要用到a，a因为还未构造成功，因此b构造失败。Spring官方推荐使用构造器注入方法，因为这样可以避免循环依赖，会抛出异常提示，保证了注入对象不为空，保证客户端调用时返回的是已经构造完毕的对象（因为构造器注入时，依赖对象建议用final修饰，final的内存语义保证构造函数构造完毕后外界才能访问变量）</li>
+    </ul>
+  </li>
+  <li>
+    <p>解决方案：</p>
+
+    <ul>
+      <li>
+        <p>核心类：ConstructorArgument类，ValueHolder类，后者是前者的内部类，封装了value，type和name，前者内部有一个List成员变量。两者关系类似PropertyValue和PropertyValues,每一个实例的name都对应着一个beanDefinition，每个beanDefinition中都有一个ConstructorArgument，每个ConstructorArgument中都有一个list&lt;valueHolder&gt;</p>
+      </li>
+      <li>
+        <p>读取XML，根据constructor-arg子标签获取ref/value,type,name值放入beanDefinition.getConstrustorArgument.valueholder中。此时要注意，如果是ref，就要考虑如下内容：</p>
+
+        <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">private</span> <span class="kt">void</span> <span class="nf">processConstructorArgument</span><span class="o">(</span><span class="nc">Element</span> <span class="n">element</span><span class="o">,</span><span class="nc">BeanDefinition</span> <span class="n">beanDefinition</span><span class="o">){</span>
+      <span class="nc">NodeList</span> <span class="n">constructorNodes</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="na">getElementsByTagName</span><span class="o">(</span><span class="s">"constructor-arg"</span><span class="o">);</span>
+      <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">constructorNodes</span><span class="o">.</span><span class="na">getLength</span><span class="o">();</span><span class="n">i</span><span class="o">++){</span>
+          <span class="nc">Node</span> <span class="n">node</span> <span class="o">=</span> <span class="n">constructorNodes</span><span class="o">.</span><span class="na">item</span><span class="o">(</span><span class="n">i</span><span class="o">);</span>
+          <span class="k">if</span><span class="o">(</span><span class="n">node</span> <span class="k">instanceof</span> <span class="nc">Element</span><span class="o">){</span>
+              <span class="nc">Element</span> <span class="n">constructorElement</span> <span class="o">=</span> <span class="o">(</span><span class="nc">Element</span><span class="o">)</span><span class="n">node</span><span class="o">;</span>
+              <span class="nc">String</span> <span class="n">name</span> <span class="o">=</span> <span class="n">constructorElement</span><span class="o">.</span><span class="na">getAttribute</span><span class="o">(</span><span class="s">"name"</span><span class="o">);</span>
+              <span class="nc">String</span> <span class="n">type</span> <span class="o">=</span> <span class="n">constructorElement</span><span class="o">.</span><span class="na">getAttribute</span><span class="o">(</span><span class="s">"type"</span><span class="o">);</span>
+              <span class="nc">String</span> <span class="n">value</span> <span class="o">=</span> <span class="n">constructorElement</span><span class="o">.</span><span class="na">getAttribute</span><span class="o">(</span><span class="s">"value"</span><span class="o">);</span>
+              <span class="k">if</span><span class="o">(</span><span class="n">value</span><span class="o">!=</span><span class="kc">null</span><span class="o">&amp;&amp;</span><span class="n">value</span><span class="o">.</span><span class="na">length</span><span class="o">()&gt;</span><span class="mi">0</span><span class="o">){</span><span class="c1">//有value标签</span>
+                  <span class="n">beanDefinition</span><span class="o">.</span><span class="na">getConstructorArgument</span><span class="o">().</span><span class="na">addArgumentValue</span><span class="o">(</span><span class="k">new</span> <span class="nc">ConstructorArgument</span><span class="o">.</span><span class="na">ValueHolder</span><span class="o">(</span><span class="n">value</span><span class="o">,</span><span class="n">type</span><span class="o">,</span><span class="n">name</span><span class="o">));</span>
+              <span class="o">}</span><span class="k">else</span><span class="o">{</span>
+                  <span class="nc">String</span> <span class="n">ref</span> <span class="o">=</span> <span class="n">constructorElement</span><span class="o">.</span><span class="na">getAttribute</span><span class="o">(</span><span class="s">"ref"</span><span class="o">);</span>
+                  <span class="k">if</span><span class="o">(</span><span class="n">ref</span><span class="o">==</span><span class="kc">null</span><span class="o">||</span><span class="n">ref</span><span class="o">.</span><span class="na">length</span><span class="o">()==</span><span class="mi">0</span><span class="o">){</span>
+                      <span class="k">throw</span> <span class="k">new</span> <span class="nf">IllegalArgumentException</span><span class="o">(</span><span class="s">"Configuration problem: &lt;constructor-arg&gt; element for property '"</span>
+                              <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s">"' must specify a ref or value"</span><span class="o">);</span>
+                  <span class="o">}</span>
+                  <span class="nc">BeanReference</span> <span class="n">beanReference</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">BeanReference</span><span class="o">(</span><span class="n">ref</span><span class="o">);</span>
+                  <span class="n">beanDefinition</span><span class="o">.</span><span class="na">getConstructorArgument</span><span class="o">().</span><span class="na">addArgumentValue</span><span class="o">(</span><span class="k">new</span> <span class="nc">ConstructorArgument</span><span class="o">.</span><span class="na">ValueHolder</span><span class="o">(</span><span class="n">beanReference</span><span class="o">,</span><span class="n">type</span><span class="o">,</span><span class="n">name</span><span class="o">));</span>
+              <span class="o">}</span>
+          <span class="o">}</span>
+      <span class="o">}</span>
+  <span class="o">}</span>
+</code></pre></div>        </div>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>getBean会触发创建-&gt;doCreateBean-&gt;createBeanInstance，此时根据是否配置constructor-arg判断是调用有参构造还是无参构造，通过反射构建实例。</p>
+
+    <ul>
+      <li>
+        <p>ref对象name是否在三级缓存但是不在一级缓存？回顾一下，三级缓存的作用是存放所有还未进行before和after操作的实例，一级缓存是存放所有已经完全构建完毕的实例。如果在三级不在一级，说明ref的对象还没有被完全构建完毕，这在构造器注入中会造成循环依赖，无法解决，因此需要抛出异常进行提示。</p>
+      </li>
+      <li>
+        <p>ref如果不在三级缓存，说明ref的实例还未创建，用getbean进行创建即可。在ref的实例创建的过程中，如果未发生循环依赖则创建成功，如果发生循环依赖则抛出异常（就是上一点说到的）</p>
+      </li>
+      <li>
+        <p>ref如果即在三级缓存，又在一级缓存，说明ref的实例已经创建，用getbean获取即可。</p>
+
+        <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="c1">//增加构造函数版本1.0，只判断参数数量相同</span>
+  <span class="kd">private</span> <span class="nc">Object</span> <span class="nf">createBeanInstance</span><span class="o">(</span><span class="nc">BeanDefinition</span> <span class="n">beanDefinition</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+      <span class="k">if</span><span class="o">(</span><span class="n">beanDefinition</span><span class="o">.</span><span class="na">getConstructorArgument</span><span class="o">().</span><span class="na">isEmpty</span><span class="o">()){</span><span class="c1">//如果没有constructor-arg标签，则调用无参构造函数</span>
+          <span class="k">return</span> <span class="n">beanDefinition</span><span class="o">.</span><span class="na">getBeanClass</span><span class="o">().</span><span class="na">newInstance</span><span class="o">();</span>
+      <span class="o">}</span><span class="k">else</span><span class="o">{</span>
+          <span class="nc">List</span><span class="o">&lt;</span><span class="nc">ConstructorArgument</span><span class="o">.</span><span class="na">ValueHolder</span><span class="o">&gt;</span> <span class="n">valueHolders</span> <span class="o">=</span> <span class="n">beanDefinition</span><span class="o">.</span><span class="na">getConstructorArgument</span><span class="o">().</span><span class="na">getArgumentValues</span><span class="o">();</span>
+          <span class="nc">Class</span> <span class="n">clazz</span> <span class="o">=</span> <span class="nc">Class</span><span class="o">.</span><span class="na">forName</span><span class="o">(</span><span class="n">beanDefinition</span><span class="o">.</span><span class="na">getBeanClassName</span><span class="o">());</span><span class="c1">//获取变量类的class对象</span>
+          <span class="nc">Constructor</span><span class="o">[]</span> <span class="n">cons</span> <span class="o">=</span> <span class="n">clazz</span><span class="o">.</span><span class="na">getConstructors</span><span class="o">();</span><span class="c1">//获取所有构造器</span>
+          <span class="k">for</span><span class="o">(</span><span class="nc">Constructor</span> <span class="nl">constructor:</span><span class="n">cons</span><span class="o">){</span>
+              <span class="k">if</span><span class="o">(</span><span class="n">constructor</span><span class="o">.</span><span class="na">getParameterCount</span><span class="o">()==</span><span class="n">valueHolders</span><span class="o">.</span><span class="na">size</span><span class="o">()){</span><span class="c1">//这里只匹配了参数数量相同的</span>
+                  <span class="nc">Object</span><span class="o">[]</span> <span class="n">params</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Object</span><span class="o">[</span><span class="n">valueHolders</span><span class="o">.</span><span class="na">size</span><span class="o">()];</span>
+                  <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">params</span><span class="o">.</span><span class="na">length</span><span class="o">;</span><span class="n">i</span><span class="o">++){</span>
+                      <span class="n">params</span><span class="o">[</span><span class="n">i</span><span class="o">]</span> <span class="o">=</span> <span class="n">valueHolders</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">i</span><span class="o">).</span><span class="na">getValue</span><span class="o">();</span>
+                      <span class="k">if</span><span class="o">(</span><span class="n">params</span><span class="o">[</span><span class="n">i</span><span class="o">]</span> <span class="k">instanceof</span> <span class="nc">BeanReference</span><span class="o">){</span>
+                          <span class="nc">BeanReference</span> <span class="n">ref</span> <span class="o">=</span> <span class="o">(</span><span class="nc">BeanReference</span><span class="o">)</span><span class="n">params</span><span class="o">[</span><span class="n">i</span><span class="o">];</span>
+                          <span class="nc">String</span> <span class="n">refName</span> <span class="o">=</span> <span class="n">ref</span><span class="o">.</span><span class="na">getName</span><span class="o">();</span>
+                          <span class="k">if</span><span class="o">(</span><span class="n">thirdCache</span><span class="o">.</span><span class="na">containsKey</span><span class="o">(</span><span class="n">refName</span><span class="o">)&amp;&amp;!</span><span class="n">firstCache</span><span class="o">.</span><span class="na">containsKey</span><span class="o">(</span><span class="n">refName</span><span class="o">)){</span>
+                              <span class="k">throw</span> <span class="k">new</span> <span class="nf">IllegalAccessException</span><span class="o">(</span><span class="s">"构造函数循环依赖"</span><span class="o">+</span><span class="n">refName</span><span class="o">);</span>
+                          <span class="o">}</span><span class="k">else</span><span class="o">{</span>
+                              <span class="n">params</span><span class="o">[</span><span class="n">i</span><span class="o">]</span> <span class="o">=</span> <span class="n">getBean</span><span class="o">(</span><span class="n">refName</span><span class="o">);</span>
+                          <span class="o">}</span>
+                      <span class="o">}</span>
+                  <span class="o">}</span>
+                  <span class="k">return</span> <span class="n">constructor</span><span class="o">.</span><span class="na">newInstance</span><span class="o">(</span><span class="n">params</span><span class="o">);</span>
+              <span class="o">}</span>
+          <span class="o">}</span>
+      <span class="o">}</span>
+      <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+  <span class="o">}</span>
+</code></pre></div>        </div>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="不足二基本类型只能传递string类型参数">不足二：基本类型只能传递String类型参数</h3>
+
+<ul>
+  <li>
+    <p>实现功能：不仅可以完成基本类型+Spring的赋值，还可以通过实现Converter接口的方式，自由配置String类型转任意类型。</p>
+
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="nd">@Test</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">testConvert</span><span class="o">()</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+      <span class="nc">ApplicationContext</span> <span class="n">applicationContext</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ClassPathXmlApplicationContext</span><span class="o">(</span><span class="s">"tinyioc.xml"</span><span class="o">);</span>
+      <span class="nc">Driveable</span> <span class="n">car</span> <span class="o">=</span> <span class="o">(</span><span class="nc">Driveable</span><span class="o">)</span> <span class="n">applicationContext</span><span class="o">.</span><span class="na">getBean</span><span class="o">(</span><span class="s">"carByConvert"</span><span class="o">);</span>
+      <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">car</span><span class="o">);</span>
+  <span class="o">}</span>
+    
+  <span class="c1">//结果：Car{name='notOnlySpring', price=1000, address=null}</span>
+</code></pre></div>    </div>
+
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="o">&lt;</span><span class="n">bean</span> <span class="n">id</span><span class="o">=</span><span class="s">"anything"</span> <span class="kd">class</span><span class="err">="</span><span class="nc">com</span><span class="o">.</span><span class="na">sonihr</span><span class="o">.</span><span class="na">Anything</span><span class="s">"&gt;
+      &lt;property name="</span><span class="n">point</span><span class="s">" value="</span><span class="mi">22</span><span class="o">;</span><span class="mi">99</span><span class="s">"&gt;&lt;/property&gt;
+  &lt;/bean&gt;
+  &lt;bean id="</span><span class="n">pointConverter</span><span class="s">" class="</span><span class="n">com</span><span class="o">.</span><span class="na">sonihr</span><span class="o">.</span><span class="na">beans</span><span class="o">.</span><span class="na">converter</span><span class="o">.</span><span class="na">PointConverter</span><span class="s">"&gt;&lt;/bean&gt;
+    
+  @Test
+  public void testConvert2() throws Exception {
+      ApplicationContext applicationContext = new ClassPathXmlApplicationContext("</span><span class="n">tinyioc</span><span class="o">.</span><span class="na">xml</span><span class="s">");
+      Anything anything = (Anything) applicationContext.getBean("</span><span class="n">anything</span><span class="err">"</span><span class="o">);</span>
+      <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">anything</span><span class="o">);</span>
+  <span class="o">}</span>
+  <span class="c1">//结果：Anything{point=Point{x=22, y=99}}</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>实现思路：接口为Converter，工厂类为ConverterFactory。接口中规定了getType方法，用于获得该接口是string与什么type之间的转换关系。还规定了string与type之间的转换方法，print和parse。</p>
+
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Converter</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="o">{</span>
+      <span class="nc">Type</span> <span class="nf">getType</span><span class="o">();</span>
+      <span class="nc">String</span> <span class="nf">print</span><span class="o">(</span><span class="no">T</span> <span class="n">fieldValue</span><span class="o">);</span>
+      <span class="no">T</span> <span class="nf">parse</span><span class="o">(</span><span class="nc">String</span> <span class="n">clientValue</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span><span class="o">;</span>
+  <span class="o">}</span>
+</code></pre></div>    </div>
+
+    <p>给出一个实现类：</p>
+
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">public</span> <span class="kd">class</span> <span class="nc">PointConverter</span> <span class="kd">implements</span> <span class="nc">Converter</span><span class="o">&lt;</span><span class="nc">Point</span><span class="o">&gt;</span> <span class="o">{</span>
+      <span class="kd">private</span> <span class="nc">Type</span> <span class="n">type</span><span class="o">;</span>
+    
+      <span class="kd">public</span> <span class="nf">PointConverter</span><span class="o">()</span> <span class="o">{</span>
+          <span class="k">this</span><span class="o">.</span><span class="na">type</span> <span class="o">=</span> <span class="nc">Point</span><span class="o">.</span><span class="na">class</span><span class="o">;</span>
+      <span class="o">}</span>
+    
+      <span class="kd">public</span> <span class="nc">Type</span> <span class="nf">getType</span><span class="o">()</span> <span class="o">{</span>
+          <span class="k">return</span> <span class="n">type</span><span class="o">;</span>
+      <span class="o">}</span>
+    
+    
+      <span class="nd">@Override</span>
+      <span class="kd">public</span> <span class="nc">String</span> <span class="nf">print</span><span class="o">(</span><span class="nc">Point</span> <span class="n">fieldValue</span><span class="o">)</span> <span class="o">{</span>
+          <span class="k">return</span> <span class="n">fieldValue</span><span class="o">.</span><span class="na">getX</span><span class="o">()+</span><span class="s">";"</span><span class="o">+</span><span class="n">fieldValue</span><span class="o">.</span><span class="na">getY</span><span class="o">();</span>
+      <span class="o">}</span>
+    
+      <span class="nd">@Override</span>
+      <span class="kd">public</span> <span class="nc">Point</span> <span class="nf">parse</span><span class="o">(</span><span class="nc">String</span> <span class="n">clientValue</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+          <span class="nc">String</span><span class="o">[]</span> <span class="n">xy</span> <span class="o">=</span> <span class="n">clientValue</span><span class="o">.</span><span class="na">split</span><span class="o">(</span><span class="s">";"</span><span class="o">);</span>
+          <span class="nc">Point</span> <span class="n">point</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Point</span><span class="o">();</span>
+          <span class="n">point</span><span class="o">.</span><span class="na">setX</span><span class="o">(</span><span class="nc">Integer</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="n">xy</span><span class="o">[</span><span class="mi">0</span><span class="o">]));</span>
+          <span class="n">point</span><span class="o">.</span><span class="na">setY</span><span class="o">(</span><span class="nc">Integer</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="n">xy</span><span class="o">[</span><span class="mi">1</span><span class="o">]));</span>
+          <span class="k">return</span> <span class="n">point</span><span class="o">;</span>
+      <span class="o">}</span>
+  <span class="o">}</span>
+</code></pre></div>    </div>
+
+    <p>工厂类中封装了一个Map，用于保存type和相对应的converter。</p>
+  </li>
+  <li>
+    <p>在applyPropertyValues方法中，如果是非ref，则说明获取到的是string类型，应该进行转换。如果字段类型是String就不用转换，否则 先用CoverterFactory获取到ConverterMap，然后根据字段的type获取转换器。</p>
+
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">else</span><span class="o">{</span>
+      <span class="nc">Field</span> <span class="n">field</span> <span class="o">=</span> <span class="n">field</span> <span class="o">=</span> <span class="n">bean</span><span class="o">.</span><span class="na">getClass</span><span class="o">().</span><span class="na">getDeclaredField</span><span class="o">(</span><span class="n">propertyValue</span><span class="o">.</span><span class="na">getName</span><span class="o">());</span><span class="c1">//获得name对应的字段</span>
+      <span class="k">if</span><span class="o">(</span><span class="n">field</span><span class="o">.</span><span class="na">getType</span><span class="o">().</span><span class="na">toString</span><span class="o">().</span><span class="na">equals</span><span class="o">(</span><span class="s">"class java.lang.String"</span><span class="o">))</span>
+          <span class="n">convertedValue</span> <span class="o">=</span> <span class="n">value</span><span class="o">;</span>
+      <span class="k">else</span>
+          <span class="n">convertedValue</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">converterFactory</span><span class="o">.</span><span class="na">getConverterMap</span><span class="o">().</span><span class="na">get</span><span class="o">(</span><span class="n">field</span><span class="o">.</span><span class="na">getType</span><span class="o">()).</span><span class="na">parse</span><span class="o">((</span><span class="nc">String</span><span class="o">)</span><span class="n">value</span><span class="o">);</span>
+  <span class="o">}</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>在AbstractAoolicationContext中，因为Converter实现类都不需要进行AOP，所以要在BeanPostProcessor之前被创建，即在refresh中，在registerBeanPostProcessor之前，先registerConverter，通过beanFactory。getBeansForType获取到所有实现Concerter的实例，并创建好,然后把对应的类型和转换器加入到map中。</p>
+
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">registerBeanPostProcessors</span><span class="o">(</span><span class="nc">AbstractBeanFactory</span> <span class="n">beanFactory</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+      <span class="c1">//返回的实例都是已经创建完毕的，参数都已经赋值完毕了</span>
+      <span class="nc">List</span> <span class="n">beanPostProcessors</span> <span class="o">=</span> <span class="n">beanFactory</span><span class="o">.</span><span class="na">getBeansForType</span><span class="o">(</span><span class="nc">BeanPostProcessor</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+      <span class="k">for</span> <span class="o">(</span><span class="nc">Object</span> <span class="n">beanPostProcessor</span> <span class="o">:</span> <span class="n">beanPostProcessors</span><span class="o">)</span> <span class="o">{</span>
+          <span class="n">beanFactory</span><span class="o">.</span><span class="na">addBeanPostProcessor</span><span class="o">((</span><span class="nc">BeanPostProcessor</span><span class="o">)</span> <span class="n">beanPostProcessor</span><span class="o">);</span>
+      <span class="o">}</span>
+  <span class="o">}</span>
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h3 id="不足三未实现完整的生命周期">不足三：未实现完整的生命周期</h3>
+
+<ul>
+  <li>总结一下bean的生命周期，构造函数实例化bean——&gt;setter-&gt;BPP.before-&gt;InitializingBean.afterPropertiesSet方法-&gt;init-method-&gt;BBP.after-&gt;disposableBean.destory-&gt;destroy-Method.</li>
+  <li>
+    <p>init-method和destory-method，在xml中指定其所对应的方法，在我的demo中，就没有写xml了，而是所有想要实现init-method和destory-method的，都必须叫这两个名字。afterPropertiesSet方法和destroy方法需要分别继承InitializingBean接口和disposableBean方法。
+  <img src="http://img.sonihr.com/02ead9b0-96b2-483f-9ba8-725f5f927b6d.jpg" alt="img" /></p>
+  </li>
+  <li>
+    <p>实现方法</p>
+
+    <ul>
+      <li>
+        <p>init_method和destroy_method放在try块中，如果反射时报错noSuchMethod，这说明该类没有这个方法，那么就catch，否则就反射运行。一定是无参的。</p>
+      </li>
+      <li>
+        <p>编写两个接口，InitalizingBean和Disposable接口。在ApplyPeopertyValues方法后，如果bean instanceof InitializingBean，则调用其afterpropertiesSet方法。在close方法中，一样的，instanceof Disposable就destroy。</p>
+
+        <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">close</span><span class="o">(){</span>
+      <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span><span class="nc">Object</span><span class="o">&gt;</span> <span class="n">thirdCache</span> <span class="o">=</span> <span class="n">beanFactory</span><span class="o">.</span><span class="na">getThirdCache</span><span class="o">();</span>
+      <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span><span class="nc">Object</span><span class="o">&gt;</span> <span class="n">firstCache</span> <span class="o">=</span> <span class="n">beanFactory</span><span class="o">.</span><span class="na">getFirstCache</span><span class="o">();</span>
+      <span class="k">for</span><span class="o">(</span><span class="nc">Map</span><span class="o">.</span><span class="na">Entry</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span><span class="nc">BeanDefinition</span><span class="o">&gt;</span> <span class="nl">entry:</span><span class="n">beanFactory</span><span class="o">.</span><span class="na">getBeanDefinitionMap</span><span class="o">().</span><span class="na">entrySet</span><span class="o">()){</span>
+          <span class="nc">String</span> <span class="n">beanName</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="na">getKey</span><span class="o">();</span>
+          <span class="nc">Object</span> <span class="n">invokeBeanName</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="na">getValue</span><span class="o">().</span><span class="na">getBean</span><span class="o">();</span>
+          <span class="nc">Object</span> <span class="n">realClassInvokeBean</span> <span class="o">=</span> <span class="n">thirdCache</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">beanName</span><span class="o">);</span>
+          <span class="k">if</span><span class="o">(</span><span class="n">realClassInvokeBean</span> <span class="k">instanceof</span> <span class="nc">DisposableBean</span><span class="o">){</span>
+              <span class="o">((</span><span class="nc">DisposableBean</span><span class="o">)</span> <span class="n">realClassInvokeBean</span><span class="o">).</span><span class="na">destroy</span><span class="o">();</span>
+          <span class="o">}</span>
+          <span class="k">try</span><span class="o">{</span>
+              <span class="nc">Method</span> <span class="n">method</span> <span class="o">=</span>  <span class="n">realClassInvokeBean</span><span class="o">.</span><span class="na">getClass</span><span class="o">().</span><span class="na">getMethod</span><span class="o">(</span><span class="s">"destroy_method"</span><span class="o">,</span><span class="kc">null</span><span class="o">);</span>
+              <span class="n">method</span><span class="o">.</span><span class="na">invoke</span><span class="o">(</span><span class="n">realClassInvokeBean</span><span class="o">,</span><span class="kc">null</span><span class="o">);</span>
+          <span class="o">}</span><span class="k">catch</span> <span class="o">(</span><span class="nc">Exception</span> <span class="n">e</span><span class="o">){</span>
+        
+      <span class="o">}</span>
+  <span class="o">}</span> 
+</code></pre></div>        </div>
+      </li>
+      <li>
+        <p>实现效果</p>
+
+        <p><img src="http://img.sonihr.com/69141387-2506-4bd9-8d3c-8e80e6f83546.jpg" alt="img" /></p>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="不足四只实现了单例模式">不足四：只实现了单例模式</h3>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Test</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">testPrototype</span><span class="o">()</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+    <span class="nc">ApplicationContext</span> <span class="n">applicationContext</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ClassPathXmlApplicationContext</span><span class="o">(</span><span class="s">"prototype.xml"</span><span class="o">);</span>
+    <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span><span class="n">i</span><span class="o">&lt;</span><span class="mi">3</span><span class="o">;</span><span class="n">i</span><span class="o">++){</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">applicationContext</span><span class="o">.</span><span class="na">getBean</span><span class="o">(</span><span class="s">"carPrototype"</span><span class="o">).</span><span class="na">hashCode</span><span class="o">());</span>
+
+    <span class="o">}</span>
+    <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span><span class="n">i</span><span class="o">&lt;</span><span class="mi">3</span><span class="o">;</span><span class="n">i</span><span class="o">++)</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">applicationContext</span><span class="o">.</span><span class="na">getBean</span><span class="o">(</span><span class="s">"carSingleton"</span><span class="o">).</span><span class="na">hashCode</span><span class="o">());</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<ul>
+  <li>解决方案：读xml的时候，读取scope属性下内容，如果是singleton或者没有这个属性，就说明是单例，否则就是prototype，然后将这个属性赋值给对应的beanDefinition，isSingleton属性用来判断该beanDefinition是否为单例。如果是prototype，只需要改动创建语句，将getbean方法中的判断语句改为：if(bean==null||!beanDefinition.isSingleton())。如果不是单例，那每次都要创建，不管缓存中有没有，每次缓存中都保存一个最新的，不过保存不保存也没啥区别，反正都是返回最新的。prototype其实就是每次都走一遍getBean的创建流程而已。值得注意的是，如果单例内注入多例，单例里保存的永远是那个第一次创建时指向的多例。</li>
+</ul>
+
+<h3 id="不足五未实现注解和auto-scan">不足五：未实现注解和auto-scan</h3>
+
+<h4 id="注解">注解</h4>
+
+<ul>
+  <li>写个编译器或JVM看的信息，如果想处理这个信息，就需要自己写处理器，对于编译器编译期的注解(source和class)，继承AbstractProcessor类实现方法即可，用于自动生成代码等，相当于java——&gt;class转化时可以根据注解来进行一定的操作。对于运行期的注解(runtime)，即写给JVM看的，需要通过反射解析，然后程序员可以根据获得的注解信息进行相关操作。</li>
+  <li>元注解，即可以对注解进行注解的注解，理解成最基础的注解。
+    <ul>
+      <li>@Retention，给定了被注解注解的保留范围，source编译时进行操作，不会写入class文件，class类加载阶段丢弃，会写入class，runtime保存到运行期，可以反射获取。source和class的区别是，source强调单个java的编译期间，因此编译完成后可以丢弃。但是B.java编译时，需要依赖A.class,并且B想到看A的注解，此时就要用class（这个过程是定制开发编译过程的开发人员做的，即规定先编译B.java再编译A.java，但是编译完成后还没有运行）。保留情况：.java（source）-&gt;.class字节码（class）-&gt;内存中字节码（runtime）</li>
+      <li>@target，指定注解可以放在那些元素上，元素包括注解，构造器，成员变量，局部变量，方法等。</li>
+      <li>@Inherited，默认情况下父类注解不会被自类继承，但是如果注解了inherited则注解会默认继承。但是注解本身是无法继承的，即A注解无法派生出ASon注解。这里@Inherited的意思是被修饰的类的注解，可以继承给子类，注意区别</li>
+      <li>@Documented，被注解的注解会出现javadoc产生的文档中的内容，比如你定义的@A method(){}，如果没有加@Documented注解，则文档中只会出现method()</li>
+      <li>@Repeatable，被注解的注解可以在一个程序元素上重复出现，表达即是又是的含义</li>
+    </ul>
+  </li>
+  <li>
+    <p>如何自定义一个注解，内部参数长得很像接口方法，“返回值”其实是设定值类型，类型可以使基本类型，String，class，枚举，注释，上述类型的数组。注意，不得为包装类或其他类实例。class类型指的是Clss&lt;?&gt;类型。</p>
+
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">public</span> <span class="nd">@interface</span> <span class="nc">MyAnnotation</span><span class="o">{</span>
+      <span class="kt">int</span> <span class="nf">getId</span><span class="o">();</span>
+      <span class="nc">String</span> <span class="nf">getName</span><span class="o">();</span>
+      <span class="nc">String</span><span class="o">[]</span> <span class="nf">getTeacherNames</span><span class="o">();</span>
+  <span class="o">}</span>
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h4 id="实现注解">实现注解</h4>
+
+<ul>
+  <li>
+    <p>在spring中，对同一个bean混用注解和xml会出现错误，因此我们的需求是：对单一bean只能采用注解或者xml二选一的方式，实现@Autowired根据id而不是类型进行注入，类似@resource，如果没有指定id则默认与变量同名。（P.S.其实我就是想实现@resource）</p>
+  </li>
+  <li>
+    <p>实现目标：1.在xml中配置bean，但是bean的依赖不需要写ref，而是通过@Autowired进行自动注入。2.xml中写上&lt;component-scan base-package=”com.sonihr”\/\&gt;即可对相应的包进行自动的实例化和注入，并且此时如果xml中有其他配置的实例，可以实现注解和xml实例均创建成功。</p>
+  </li>
+  <li>
+    <p>实现目标1的解决思路</p>
+
+    <ul>
+      <li>
+        <p>这个思路很简单，首先设计@Autowired注解。id参数表示被注解的字段ref实例的id，比如a ref b，那@Autowird的id就是b。如果没有指定id，那么默认是被修饰的字段变量名。</p>
+
+        <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="nd">@Retention</span><span class="o">(</span><span class="nc">RetentionPolicy</span><span class="o">.</span><span class="na">RUNTIME</span><span class="o">)</span>
+  <span class="nd">@Target</span><span class="o">({</span><span class="nc">ElementType</span><span class="o">.</span><span class="na">METHOD</span><span class="o">,</span><span class="nc">ElementType</span><span class="o">.</span><span class="na">FIELD</span><span class="o">})</span>
+  <span class="kd">public</span> <span class="nd">@interface</span> <span class="nc">Autowired</span> <span class="o">{</span>
+      <span class="nc">String</span> <span class="nf">getId</span><span class="o">()</span> <span class="k">default</span> <span class="s">""</span><span class="o">;</span>
+  <span class="o">}</span>
+</code></pre></div>        </div>
+      </li>
+      <li>
+        <p>然后通过xml已经可以实例化出没有ref依赖的实例了，在doCreateBean方法中，在applyPropertyValues方法后，即设置完变量的字段值后，调用injectAnnotation方法，进行注解注入。在这个方法中，判断类中所有字段是否有Autowired注解，如果有就获取autowird的值和对应的字段变量名，将其设置。因为设置的一定是ref的，即@Autowired注入的必然是依赖实例，因此通过getBean方法直接生成即可，不需要像之前还要用BeanReference类型包装。为什么要放入secondCache中呢？因为如果在注解中产生循环依赖，a ref b, b ref a，此时b中存储的对象a可能是不完整的（因为AOP的存在，a可能最终变成一个代理类实例）。因此通过secondCache保存所有有可能注入了不完美实例的实例。</p>
+
+        <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">injectAnnotation</span><span class="o">(</span><span class="nc">Object</span> <span class="n">bean</span><span class="o">,</span><span class="nc">BeanDefinition</span> <span class="n">beanDefinition</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span><span class="o">{</span>
+      <span class="nc">Field</span><span class="o">[]</span> <span class="n">fields</span> <span class="o">=</span> <span class="n">bean</span><span class="o">.</span><span class="na">getClass</span><span class="o">().</span><span class="na">getDeclaredFields</span><span class="o">();</span>
+      <span class="k">for</span><span class="o">(</span><span class="nc">Field</span> <span class="nl">field:</span><span class="n">fields</span><span class="o">){</span>
+          <span class="nc">Autowired</span> <span class="n">autowired</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="na">getAnnotation</span><span class="o">(</span><span class="nc">Autowired</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+          <span class="k">if</span><span class="o">(</span><span class="n">autowired</span><span class="o">==</span><span class="kc">null</span><span class="o">)</span>
+              <span class="k">continue</span><span class="o">;</span>
+          <span class="nc">String</span> <span class="n">refName</span> <span class="o">=</span> <span class="n">autowired</span><span class="o">.</span><span class="na">getId</span><span class="o">();</span>
+          <span class="k">if</span><span class="o">(</span><span class="n">refName</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="s">""</span><span class="o">)){</span>
+              <span class="n">refName</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="na">getName</span><span class="o">();</span>
+          <span class="o">}</span>
+          <span class="n">secondCache</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">refName</span><span class="o">,</span><span class="n">bean</span><span class="o">);</span>
+          <span class="n">field</span><span class="o">.</span><span class="na">setAccessible</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+          <span class="n">field</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="n">bean</span><span class="o">,</span><span class="n">getBean</span><span class="o">(</span><span class="n">refName</span><span class="o">));</span>
+      <span class="o">}</span>
+  <span class="o">}</span>
+</code></pre></div>        </div>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>实现目标2的解决思路：xml中配置&lt;component-scan base-package=”com.sonihr”/&gt;，然后通过XmlBeanDefinitionReader可以读取到该标签的包名packageName。核心是，如果遍历这个包，然后找到对应的注解并进行处理呢？</p>
+    <ul>
+      <li>AnnotationParser类，这个类的作用是读取packageName包下（com.sonihr的路径是com/sonihr/）的所有.class文件，然后去掉.class前面的字符就是类名。这个过程是递归的，直到当钱file的子files中没有目录为止。然后将获得的set classNames（用set就是为了去重）反射获得类对象，然后就可以开心的操作其中的field了。</li>
+      <li>有两种注释，第一种是类似@Component，@Service的注解，表示该类需要被创建实例。第二种是@Value，代表该类字段值，类似于xml中property name=xxx value=xxx中的value。节省版面，可以看我项目中的代码，挺简单的。</li>
+      <li>获取到要创建的类，其名称，还有value值，就可以放入一个map&lt;String name,BeanDefinition beanDefinition&gt;中了，当所有的注解查找完成后，再交给beanFactory的registry即可，后面的创建过程倒是和xml中完全一样。本来嘛，一个是xml读取配置，一个是注解读取配置。</li>
+    </ul>
+  </li>
+</ul>
+
+  </section>
+</article>
+
+<section class="read-more">
+   
+   
+   <div class="read-more-item">
+       <span class="read-more-item-dim">最近的文章</span>
+       <h2 class="post-list__post-title post-title"><a href="/2019/10/small-mybatis%E5%AE%9E%E7%8E%B0/" title="link to 不如写个small-Mybatis">不如写个small-Mybatis</a></h2>
+       <p class="excerpt">MyBatis框架概论JDBC如何演化到MyBatis  JDBC查询分析          加载JDBC驱动      建立并获取数据库连接      创建JDBC statement对象  ...&hellip;</p>
+       <div class="post-list__meta"><time datetime="2019-10-21 00:00:00 +0800" class="post-list__meta--date date">2019-10-21</time> &#8226; <span class="post-list__meta--tags tags">Mybatis</span><a class="btn-border-small" href=/2019/10/small-mybatis%E5%AE%9E%E7%8E%B0/>继续阅读</a></div>
+   </div>
+   
+   
+   
+   
+   <div class="read-more-item">
+       <span class="read-more-item-dim">更早的文章</span>
+       <h2 class="post-list__post-title post-title"><a href="/2019/10/small-spring%E5%AE%9E%E7%8E%B0/" title="link to 不如写个small-Spring">不如写个small-Spring</a></h2>
+       <p class="excerpt">IOC  https://mp.weixin.qq.com/s?__biz=MzI4Njg5MDA5NA==&amp;mid=2247484247&amp;idx=1&amp;sn=e228e29e344559e469ac3ecfa9715217&amp;chksm=ebd74256dca0cb40059f3f627fc9450f916c1e1b39ba741842d91774f5bb7f518063e5acf5a0#rd为什么要有IOC？  https://www.zhihu.com/q...&hellip;</p>
+       <div class="post-list__meta"><time datetime="2019-10-20 00:00:00 +0800" class="post-list__meta--date date">2019-10-20</time> &#8226; <span class="post-list__meta--tags tags">Spring</span><a class="btn-border-small" href=/2019/10/small-spring%E5%AE%9E%E7%8E%B0/>继续阅读</a></div>
+   </div>
+   
+</section>
+
+<!-- <section class="post-comments">
+  
+    <div id="disqus_thread"></div>
+    <script>
+    
+    var disqus_config = function () {
+        this.page.url = "http://localhost:4000/2019/10/tiny-spring%E7%9A%84%E4%B8%8D%E8%B6%B3/";
+        this.page.identifier = "/2019/10/tiny-spring%E7%9A%84%E4%B8%8D%E8%B6%B3/";
+    };
+
+    var disqus_shortname = 'vno-jekyll';
+    
+    (function() { // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+    </script>
+    <noscript>要查看<a href="http://disqus.com/?ref_noscript"> Disqus </a>评论，请启用 JavaScript</noscript>
+    
+  
+  
+  
+  
+</section>
+
+ -->
+           <!--  <section class="footer">
+    <footer>
+    	<span class="footer__copyright">本站点采用<a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享 署名-非商业性使用-相同方式共享 4.0 国际 许可协议</a></span>
+        <span class="footer__copyright">由 <a href="https://jekyllrb.com">Jekyll</a> 于 2019-10-23 生成，感谢 <a href="https://www.digitalocean.com/?refcode=30ed2d146762">Digital Ocean</a> 为本站提供稳定的 VPS 服务</span>
+        <span class="footer__copyright">本站采用 <a href="https://github.com/onevcat/vno-jekyll">Vno - Jekyll</a> 作为主题，您可以在 GitHub 找到<a href="https://github.com/onevcat/OneV-s-Den">本站源码</a> - &copy; 2019</span>
+    </footer>
+</section>
+ -->
+        </div>
+    </div>
+    
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+
+<script type="text/javascript" src="/js/main.js"></script>
+
+
+
+    
+  </body>
+
+</html>

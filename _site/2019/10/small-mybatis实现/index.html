@@ -216,8 +216,8 @@
 <h4 id="mybatis功能概述">Mybatis功能概述</h4>
 
 <ol>
-  <li>Mapper接口。mapper.xml对应一个mapper接口，<mapper>节点中的```<select>```等标签的id对应接口方法，标签内内容对应sql语句。Mybatis通过SqlSession.get(XXXMapper.class)，通过动态代理生成一个
-mapper实例，将connection和statement写sql，获取resultSet等操作织入其中，最后返回list，map，bean或者boolean。<strong>当然，其实MyBatis底层有自己已经封装了一层的select，update等方法。</strong></select></mapper></li>
+  <li>Mapper接口。mapper.xml对应一个mapper接口，&lt;mapper&gt;节点中的&lt;select&gt;等标签的id对应接口方法，标签内内容对应sql语句。Mybatis通过SqlSession.get(XXXMapper.class)，通过动态代理生成一个
+mapper实例，将connection和statement写sql，获取resultSet等操作织入其中，最后返回list，map，bean或者boolean。<strong>当然，其实MyBatis底层有自己已经封装了一层的select，update等方法。</strong></li>
   <li>数据处理层。主要用处是<strong>参数映射，动态sql生成</strong>。着重说一下参数映射，包括查询阶段将javaBean转化成JDBC类型数据和将查询结果resultset的jdbcType转化成javaBean。</li>
   <li>架构支撑层。1.事务管理机制。2.连接池机制。3.缓存机制。</li>
   <li>引导层。核心组件：
@@ -228,18 +228,7 @@ mapper实例，将connection和statement写sql，获取resultSet等操作织入�
       <li>ParamterHandler，负责将用户传递的参数转换成JDBC Statement所需要的参数</li>
       <li>ResultSetHandler，将JDBC返回的ResultSet结果集对象转换成list类型的集合</li>
       <li>TypeHandler，负责java数据类型和jdbc数据类型之间的映射和转换</li>
-      <li>
-        <table>
-          <tbody>
-            <tr>
-              <td>MappedStatement，其中维护者select</td>
-              <td>update</td>
-              <td>delete</td>
-              <td>insert节点的封装</td>
-            </tr>
-          </tbody>
-        </table>
-      </li>
+      <li>MappedStatement，其中维护者select|update|delete|insert节点的封装</li>
       <li>SqlSource，根据用户传递的parameterObject动态生成SQL语句并封装到BoundSql中</li>
       <li>BoundSql，动态生成的SQL语句以及相应参数信息</li>
       <li>Configuration，类似于ApllicationContext，读取配置文件并保存为一个配置类</li>
@@ -790,9 +779,9 @@ mapper实例，将connection和statement写sql，获取resultSet等操作织入�
    
    <div class="read-more-item">
        <span class="read-more-item-dim">更早的文章</span>
-       <h2 class="post-list__post-title post-title"><a href="/2019/10/small-spring%E5%AE%9E%E7%8E%B0/" title="link to 不如写个small-Spring">不如写个small-Spring</a></h2>
-       <p class="excerpt">IOC  https://mp.weixin.qq.com/s?__biz=MzI4Njg5MDA5NA==&amp;mid=2247484247&amp;idx=1&amp;sn=e228e29e344559e469ac3ecfa9715217&amp;chksm=ebd74256dca0cb40059f3f627fc9450f916c1e1b39ba741842d91774f5bb7f518063e5acf5a0#rd为什么要有IOC？  https://www.zhihu.com/q...&hellip;</p>
-       <div class="post-list__meta"><time datetime="2019-10-20 00:00:00 +0800" class="post-list__meta--date date">2019-10-20</time> &#8226; <span class="post-list__meta--tags tags">Spring</span><a class="btn-border-small" href=/2019/10/small-spring%E5%AE%9E%E7%8E%B0/>继续阅读</a></div>
+       <h2 class="post-list__post-title post-title"><a href="/2019/10/tiny-spring%E7%9A%84%E4%B8%8D%E8%B6%B3/" title="link to 完善tiny-Spring中几个不足之处">完善tiny-Spring中几个不足之处</a></h2>
+       <p class="excerpt">不足一：未实现构造器注入      实现功能：      &lt;bean id="carByConstructor" class="com.sonihr.Car"&gt;      &lt;constructor-arg value="constructor"/&gt;      &lt;constructor-arg ref="address2"/&gt;  &lt;/bean&gt;          @Test  public void testConstructor() thro...&hellip;</p>
+       <div class="post-list__meta"><time datetime="2019-10-21 00:00:00 +0800" class="post-list__meta--date date">2019-10-21</time> &#8226; <span class="post-list__meta--tags tags">Spring</span><a class="btn-border-small" href=/2019/10/tiny-spring%E7%9A%84%E4%B8%8D%E8%B6%B3/>继续阅读</a></div>
    </div>
    
 </section>
@@ -828,7 +817,7 @@ mapper实例，将connection和statement写sql，获取resultSet等操作织入�
            <!--  <section class="footer">
     <footer>
     	<span class="footer__copyright">本站点采用<a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享 署名-非商业性使用-相同方式共享 4.0 国际 许可协议</a></span>
-        <span class="footer__copyright">由 <a href="https://jekyllrb.com">Jekyll</a> 于 2019-10-22 生成，感谢 <a href="https://www.digitalocean.com/?refcode=30ed2d146762">Digital Ocean</a> 为本站提供稳定的 VPS 服务</span>
+        <span class="footer__copyright">由 <a href="https://jekyllrb.com">Jekyll</a> 于 2019-10-23 生成，感谢 <a href="https://www.digitalocean.com/?refcode=30ed2d146762">Digital Ocean</a> 为本站提供稳定的 VPS 服务</span>
         <span class="footer__copyright">本站采用 <a href="https://github.com/onevcat/vno-jekyll">Vno - Jekyll</a> 作为主题，您可以在 GitHub 找到<a href="https://github.com/onevcat/OneV-s-Den">本站源码</a> - &copy; 2019</span>
     </footer>
 </section>

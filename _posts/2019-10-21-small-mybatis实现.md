@@ -41,7 +41,7 @@ tag: Mybatis
 
 #### Mybatis功能概述
 
-1. Mapper接口。mapper.xml对应一个mapper接口，<mapper>节点中的```<select>```等标签的id对应接口方法，标签内内容对应sql语句。Mybatis通过SqlSession.get(XXXMapper.class)，通过动态代理生成一个
+1. Mapper接口。mapper.xml对应一个mapper接口，\<mapper\>节点中的\<select\>等标签的id对应接口方法，标签内内容对应sql语句。Mybatis通过SqlSession.get(XXXMapper.class)，通过动态代理生成一个
    mapper实例，将connection和statement写sql，获取resultSet等操作织入其中，最后返回list，map，bean或者boolean。<strong>当然，其实MyBatis底层有自己已经封装了一层的select，update等方法。</strong>
 2. 数据处理层。主要用处是**参数映射，动态sql生成**。着重说一下参数映射，包括查询阶段将javaBean转化成JDBC类型数据和将查询结果resultset的jdbcType转化成javaBean。
 3. 架构支撑层。1.事务管理机制。2.连接池机制。3.缓存机制。
@@ -52,7 +52,7 @@ tag: Mybatis
    4. ParamterHandler，负责将用户传递的参数转换成JDBC Statement所需要的参数
    5. ResultSetHandler，将JDBC返回的ResultSet结果集对象转换成list类型的集合
    6. TypeHandler，负责java数据类型和jdbc数据类型之间的映射和转换
-   7. MappedStatement，其中维护者select|update|delete|insert节点的封装
+   7. MappedStatement，其中维护者select\|update\|delete\|insert节点的封装
    8. SqlSource，根据用户传递的parameterObject动态生成SQL语句并封装到BoundSql中
    9. BoundSql，动态生成的SQL语句以及相应参数信息
    10. Configuration，类似于ApllicationContext，读取配置文件并保存为一个配置类
