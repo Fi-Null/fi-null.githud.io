@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <title>不如写个small-Mybatis</title>
+  <meta name="description" content="MyBatis框架概论">
+  <meta name="author" content="Wei Wang">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="不如写个small-Mybatis">
+  <meta name="twitter:description" content="MyBatis框架概论">
+  
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="不如写个small-Mybatis">
+  <meta property="og:description" content="MyBatis框架概论">
+  
+  <link rel="icon" type="image/png" href="/assets/images/favicon.png" />
+  <link href="/assets/images/favicon.png" rel="shortcut icon" type="image/png">
+  
+  <link rel="stylesheet" href="/css/main.css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link rel="canonical" href="http://localhost:4000/2019/10/small-mybatis%E5%AE%9E%E7%8E%B0/">
+  <link rel="alternate" type="application/rss+xml" title="Ke Xiang" href="http://localhost:4000/feed.xml">
+  
+  <meta name="google-site-verification" content="1-1ZlHoRvM0T2FqPbW2S-qLgYXN6rsn52kErlMPd_gw" />
+  
+</head>
+
+
+  <body>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="fa fa-list btn-mobile-menu__icon"></i>
+        <i class="fa fa-angle-up btn-mobile-close__icon hidden"></i>
+    </span>
+    
+    <header class="panel-cover panel-cover--collapsed" style="background-image: url('/assets/images/background-cover.jpg')">
+  <div class="panel-main">
+
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        <a href="/#blog" title="前往 Ke Xiang 的主页" class="blog-button"><img src="/assets/images/avatar.jpg" width="80" alt="Ke Xiang logo" class="panel-cover__logo logo" /></a>
+        <h1 class="panel-cover__title panel-title"><a href="/#blog" title="link to homepage for Ke Xiang" class="blog-button">Ke Xiang</a></h1>
+        
+        <span class="panel-cover__subtitle panel-subtitle">Code Create Life</span>
+        
+        <hr class="panel-cover__divider" />
+        <p class="panel-cover__description">Do more, Know more, Be more!</p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+    
+        
+        <div class="navigation-wrapper">
+          <div>
+            <nav class="cover-navigation cover-navigation--primary">
+              <ul class="navigation">
+                <li class="navigation__item"><a href="/" title="home" class="blog-button">Home</a></li>
+                <li class="navigation__item"><a href="/#blog" title="Visit blog" class="blog-button">Blog</a></li>
+                
+                  <li class="navigation__item"><a href="https://fi-null.github.io/resumeWeb/" target="_blank" title="resume">Resume</a></li>
+                
+                 <!-- <li class="navigation__item"><a href="/about" title="about" class="blog-button">About</a></li> -->
+              </ul>
+            </nav>
+          </div>
+          
+          <div><nav class="cover-navigation navigation--social">
+  <ul class="navigation">
+
+  
+  <!-- Weibo -->
+  <li class="navigation__item">
+    <a href="http://weibo.com/fi-null" title="@fi-null 的微博" target="_blank">
+      <i class='social fa fa-weibo'></i>
+      <span class="label">Weibo</span>
+    </a>
+  </li>
+  
+
+  
+  <!-- Github -->
+  <li class="navigation__item">
+    <a href="https://github.com/fi-null" title="@fi-null 的 Github" target="_blank">
+      <i class='social fa fa-github'></i>
+      <span class="label">Github</span>
+    </a>
+  </li>
+  
+  
+  
+  <!-- Twitter -->
+  <li class="navigation__item">
+    <a href="http://twitter.com/fi-null" title="@fi-null" target="_blank">
+      <i class='social fa fa-twitter'></i>
+      <span class="label">Twitter</span>
+    </a>
+  </li>
+  
+
+  
+  <!-- Google Plus -->
+  <li class="navigation__item">
+    <a href="https://plus.google.com/107108267983477358170" rel="author" title="Google+" target="_blank">
+      <i class='social fa fa-google-plus-square'></i>
+      <span class="label">Google Plus</span>
+    </a>
+  </li>
+  
+
+  <!-- RSS -->
+  <li class="navigation__item">
+    <a href="/feed.xml" rel="author" title="RSS" target="_blank">
+      <i class='social fa fa-rss'></i>
+      <span class="label">RSS</span>
+    </a>
+  </li>
+
+  
+  <!-- Email -->
+  <li class="navigation__item">
+    <a href="mailto:xiangke123401@gmail.com" title="Contact me">
+      <i class='social fa fa-envelope'></i>
+      <span class="label">Email</span>
+    </a>
+  </li>
+  
+
+  </ul>
+</nav>
+</div>
+        </div>
+      </div>
+    </div>
+    
+    
+    <div class="panel-cover--overlay cover-clear"></div>
+    
+  </div>
+</header>
+
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            <article class="post-container post-container--single" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="2019-10-21 00:00:00 +0800" itemprop="datePublished" class="post-meta__date date">2019-10-21</time> &#8226; <span class="post-meta__tags tags">Mybatis</span>
+    </div>
+    <h1 class="post-title">不如写个small-Mybatis</h1>
+  </header>
+
+  <section class="post">
+    <h2 id="mybatis框架概论">MyBatis框架概论</h2>
+
+<h3 id="jdbc如何演化到mybatis">JDBC如何演化到MyBatis</h3>
+
+<ul>
+  <li>JDBC查询分析
+    <ul>
+      <li>加载JDBC驱动</li>
+      <li>建立并获取数据库连接</li>
+      <li>创建JDBC statement对象</li>
+      <li>sql语句传入参数</li>
+      <li>执行sql语句并获得查询结果</li>
+      <li>对查询结果进行转换处理并将结果返回</li>
+      <li>释放资源，关闭resultset，statement，connection。</li>
+    </ul>
+  </li>
+  <li>存在哪些问题？</li>
+</ul>
+
+<h4 id="问题与解决思路">问题与解决思路</h4>
+
+<ul>
+  <li>连接的获取和释放
+    <ol>
+      <li>由上可见，JDBC每次查询或其他数据库操作都需要频繁的开启和关闭。要知道，每次连接数据库相当于一次socket通信，因此我们可以通过数据库连接池来解决，即复用数据库连接，当调用connection.close()时，并不关闭连接，而是放回连接池中等待复用，这边和线程池是类似的。本项目采用Druid连接池，QuickStart中会提及。</li>
+    </ol>
+  </li>
+  <li>SQL统一存储
+    <ol>
+      <li>连接池多种多样，可能采用DBCP，也可能用Druid，因此需要通过DataSource进行解耦，我们同一从DataSource中获取数据库连接，至于DataSource中配置的是什么连接池实现，用户不必关心。实现了ORM框架与连接池的解耦</li>
+      <li>在不同的类中进行数据库操作时，不同的类中都散落着SQL语句。我们希望sql语句和具体的java类之间进行解耦，即sql语句单独放在xml配置文件中，或者单独放在某一个java类中。这一步要求我们思考，如何从配置文件中读SQL，Dom4J在一旁摩拳擦掌</li>
+    </ol>
+  </li>
+  <li>传入参数映射和动态sql
+    <ol>
+      <li>即ORM，对象关系映射。传入sql语句中的参数可以是一个对象，sql语句的返回值也可以包装成一个对象</li>
+      <li>所谓动态sql，比如select * from t_dept where name = ? and age = ?，有时候用户只想查询name = huang，age随意的，或者age=10，name随意的。那你怎么解决呢？方法1.在添加两个方法，select语句中只有name和age，但是不够优雅，如果你的表有20列，那你排列组合得多少种情况？方法2.如果只有name或只有age的话，就自动生成只有age和name的语句。怎么实现了呢？通过xml标签，<if>等。</if></li>
+    </ol>
+  </li>
+  <li>结果映射和结果缓存
+    <ol>
+      <li>JDBC的resultSet也太麻烦了，所以要把这里封装起来。返回的除了Boolean外，查询结果还可能是Bean，List，Map。这些值都需要两点1.返回什么类型。2.需要返回的数据结构和执行结果的映射，即ResultSet和结果的转换。</li>
+      <li>可以考虑将结果缓存以提升性能。key值是sql语句和传入参数联合，如果遇到sql和参数相同的，即返回缓存值。</li>
+    </ol>
+  </li>
+  <li>解决sql语句重复问题
+    <ol>
+      <li>可以将重复的sql块独立出来，在其他sql块中引用它。</li>
+    </ol>
+  </li>
+  <li>逆向工程和插件
+    <ol>
+      <li>手写sql语句还是太多了，对于单表而言是否可以自动创建sql语句。</li>
+      <li>对于sql语句生成的前后，可否用拦截器实现插件。</li>
+    </ol>
+  </li>
+</ul>
+
+<h4 id="mybatis功能概述">Mybatis功能概述</h4>
+
+<ol>
+  <li>Mapper接口。mapper.xml对应一个mapper接口，<mapper>节点中的```<select>```等标签的id对应接口方法，标签内内容对应sql语句。Mybatis通过SqlSession.get(XXXMapper.class)，通过动态代理生成一个
+mapper实例，将connection和statement写sql，获取resultSet等操作织入其中，最后返回list，map，bean或者boolean。<strong>当然，其实MyBatis底层有自己已经封装了一层的select，update等方法。</strong></select></mapper></li>
+  <li>数据处理层。主要用处是<strong>参数映射，动态sql生成</strong>。着重说一下参数映射，包括查询阶段将javaBean转化成JDBC类型数据和将查询结果resultset的jdbcType转化成javaBean。</li>
+  <li>架构支撑层。1.事务管理机制。2.连接池机制。3.缓存机制。</li>
+  <li>引导层。核心组件：
+    <ol>
+      <li>SqlSession，顶层API，交给用户，表示一个和数据库的会话，通过其完成增删查改操作。</li>
+      <li>Executor，MyBaits调度核心，负责SQL语句的生成和查询缓存的维护</li>
+      <li>StatementHandler，封装JDBC Statement操作，负责对JDBC statement设置参数</li>
+      <li>ParamterHandler，负责将用户传递的参数转换成JDBC Statement所需要的参数</li>
+      <li>ResultSetHandler，将JDBC返回的ResultSet结果集对象转换成list类型的集合</li>
+      <li>TypeHandler，负责java数据类型和jdbc数据类型之间的映射和转换</li>
+      <li>
+        <table>
+          <tbody>
+            <tr>
+              <td>MappedStatement，其中维护者select</td>
+              <td>update</td>
+              <td>delete</td>
+              <td>insert节点的封装</td>
+            </tr>
+          </tbody>
+        </table>
+      </li>
+      <li>SqlSource，根据用户传递的parameterObject动态生成SQL语句并封装到BoundSql中</li>
+      <li>BoundSql，动态生成的SQL语句以及相应参数信息</li>
+      <li>Configuration，类似于ApllicationContext，读取配置文件并保存为一个配置类</li>
+    </ol>
+  </li>
+</ol>
+
+<h2 id="mybatis流程概述">MyBatis流程概述</h2>
+
+<ol>
+  <li>
+    <p>MyBatis流程图</p>
+
+    <p><img src="http://img.sonihr.com/e1961348-fb37-4652-ad4d-7609b6f5a82a.jpg" alt="img" /></p>
+  </li>
+</ol>
+
+<p>下面将结合代码具体分析。</p>
+
+<ol>
+  <li>MyBatis具体代码分析</li>
+</ol>
+
+<ul>
+  <li>
+    <p>SqlSessionFactoryBuilder根据XML文件流，或者Configuration类实例build出一个SqlSessionFactory。</p>
+  </li>
+  <li>
+    <p>SqlSessionFactory.openSession()相当于从连接池中获取了一个connection,创建Executor实例，创建事务实例。</p>
+
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">DefaultSqlSessionFactory</span><span class="o">.</span><span class="na">class</span>
+  
+<span class="kd">private</span> <span class="nc">SqlSession</span> <span class="nf">openSessionFromDataSource</span><span class="o">(</span><span class="nc">ExecutorType</span> <span class="n">execType</span><span class="o">,</span> <span class="nc">TransactionIsolationLevel</span> <span class="n">level</span><span class="o">,</span> <span class="kt">boolean</span> <span class="n">autoCommit</span><span class="o">)</span> <span class="o">{</span>
+    <span class="nc">Transaction</span> <span class="n">tx</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+  
+    <span class="nc">DefaultSqlSession</span> <span class="n">var8</span><span class="o">;</span>
+    <span class="k">try</span> <span class="o">{</span>
+        <span class="nc">Environment</span> <span class="n">environment</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">configuration</span><span class="o">.</span><span class="na">getEnvironment</span><span class="o">();</span>
+        <span class="nc">TransactionFactory</span> <span class="n">transactionFactory</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">getTransactionFactoryFromEnvironment</span><span class="o">(</span><span class="n">environment</span><span class="o">);</span>
+        <span class="n">tx</span> <span class="o">=</span> <span class="n">transactionFactory</span><span class="o">.</span><span class="na">newTransaction</span><span class="o">(</span><span class="n">environment</span><span class="o">.</span><span class="na">getDataSource</span><span class="o">(),</span> <span class="n">level</span><span class="o">,</span> <span class="n">autoCommit</span><span class="o">);</span>
+        <span class="nc">Executor</span> <span class="n">executor</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">configuration</span><span class="o">.</span><span class="na">newExecutor</span><span class="o">(</span><span class="n">tx</span><span class="o">,</span> <span class="n">execType</span><span class="o">);</span>
+        <span class="n">var8</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">DefaultSqlSession</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">configuration</span><span class="o">,</span> <span class="n">executor</span><span class="o">,</span> <span class="n">autoCommit</span><span class="o">);</span>
+    <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">Exception</span> <span class="n">var12</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">closeTransaction</span><span class="o">(</span><span class="n">tx</span><span class="o">);</span>
+        <span class="k">throw</span> <span class="nc">ExceptionFactory</span><span class="o">.</span><span class="na">wrapException</span><span class="o">(</span><span class="s">"Error opening session.  Cause: "</span> <span class="o">+</span> <span class="n">var12</span><span class="o">,</span> <span class="n">var12</span><span class="o">);</span>
+    <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+        <span class="nc">ErrorContext</span><span class="o">.</span><span class="na">instance</span><span class="o">().</span><span class="na">reset</span><span class="o">();</span>
+    <span class="o">}</span>
+  
+    <span class="k">return</span> <span class="n">var8</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>此时我们只是获得一条connection，session.getMapper(XxxMapper.class)时才进行创建代理实例的过程，后面会介绍。SqlSession.getMapper实际上托付给Configuration去做。</p>
+
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="no">T</span> <span class="nf">getMapper</span><span class="o">(</span><span class="nc">Class</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="n">type</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="k">this</span><span class="o">.</span><span class="na">configuration</span><span class="o">.</span><span class="na">getMapper</span><span class="o">(</span><span class="n">type</span><span class="o">,</span> <span class="k">this</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div>    </div>
+
+    <p>Configuration交给自己的成员变量mapperRegistry去做。这个成员变量是Map再封装之后的，持有configuration实例和Map&lt;Class<?>, MapperProxyFactory<?>&gt; knownMappers，正如xml文件中写的那样，每个mappee.xml中都有一个namespace，这个namespace就是Class&lt;?&gt;,而后者是对这个接口进行代理的工厂MapperProxyFactory实例，其中封装了被代理接口和缓存。这个knownMappers应该是初始化configuration的时候就已经处理完毕的。</p>
+
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">MapperRegistry</span><span class="o">.</span><span class="na">class</span>
+  
+<span class="kd">private</span> <span class="kd">final</span> <span class="nc">Configuration</span> <span class="n">config</span><span class="o">;</span>
+<span class="kd">private</span> <span class="kd">final</span> <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">Class</span><span class="o">&lt;?&gt;,</span> <span class="nc">MapperProxyFactory</span><span class="o">&lt;?&gt;&gt;</span> <span class="n">knownMappers</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashMap</span><span class="o">();</span>
+</code></pre></div>    </div>
+
+    <p>类似于Spring中的getBean方法，MyBatis中用getMapper的方式进行创建。下面代码可以看出，先根据class类型获取代理类工厂，去工厂中newInstance。注意这里是没有Spring中的单例多例的，只要你getMapper，框架就会给你newInstance一个全新的被代理实例。</p>
+
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">MapperRegistry</span><span class="o">.</span><span class="na">class</span>
+  
+<span class="kd">public</span> <span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="no">T</span> <span class="nf">getMapper</span><span class="o">(</span><span class="nc">Class</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="n">type</span><span class="o">,</span> <span class="nc">SqlSession</span> <span class="n">sqlSession</span><span class="o">)</span> <span class="o">{</span>
+    <span class="nc">MapperProxyFactory</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="n">mapperProxyFactory</span> <span class="o">=</span> <span class="o">(</span><span class="nc">MapperProxyFactory</span><span class="o">)</span><span class="k">this</span><span class="o">.</span><span class="na">knownMappers</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">type</span><span class="o">);</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">mapperProxyFactory</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">throw</span> <span class="k">new</span> <span class="nf">BindingException</span><span class="o">(</span><span class="s">"Type "</span> <span class="o">+</span> <span class="n">type</span> <span class="o">+</span> <span class="s">" is not known to the MapperRegistry."</span><span class="o">);</span>
+    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="n">mapperProxyFactory</span><span class="o">.</span><span class="na">newInstance</span><span class="o">(</span><span class="n">sqlSession</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">Exception</span> <span class="n">var5</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nf">BindingException</span><span class="o">(</span><span class="s">"Error getting mapper instance. Cause: "</span> <span class="o">+</span> <span class="n">var5</span><span class="o">,</span> <span class="n">var5</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div>    </div>
+
+    <p>newInstance()中做了什么呢？</p>
+
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">MapperProxyFactory</span><span class="o">.</span><span class="na">class</span>
+  
+<span class="kd">protected</span> <span class="no">T</span> <span class="nf">newInstance</span><span class="o">(</span><span class="nc">MapperProxy</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="n">mapperProxy</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="nc">Proxy</span><span class="o">.</span><span class="na">newProxyInstance</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">mapperInterface</span><span class="o">.</span><span class="na">getClassLoader</span><span class="o">(),</span> <span class="k">new</span> <span class="nc">Class</span><span class="o">[]{</span><span class="k">this</span><span class="o">.</span><span class="na">mapperInterface</span><span class="o">},</span> <span class="n">mapperProxy</span><span class="o">);</span>
+<span class="o">}</span>
+  
+<span class="kd">public</span> <span class="no">T</span> <span class="nf">newInstance</span><span class="o">(</span><span class="nc">SqlSession</span> <span class="n">sqlSession</span><span class="o">)</span> <span class="o">{</span>
+    <span class="nc">MapperProxy</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="n">mapperProxy</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">MapperProxy</span><span class="o">(</span><span class="n">sqlSession</span><span class="o">,</span> <span class="k">this</span><span class="o">.</span><span class="na">mapperInterface</span><span class="o">,</span> <span class="k">this</span><span class="o">.</span><span class="na">methodCache</span><span class="o">);</span>
+    <span class="k">return</span> <span class="k">this</span><span class="o">.</span><span class="na">newInstance</span><span class="o">(</span><span class="n">mapperProxy</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div>    </div>
+
+    <p>其实我们知道，Proxy.newProxyInstance()需要三个参数，类加载器，被代理接口和InvocationHnadler，<strong>什么？不知道？快去补习基础。</strong>其中InvocationHandler掌管着invoke方法，正是这个方法中实现了对被代理实例的代码增强（或者叫做代理代码）。那我们就要着重看这个InvocationHandler里面到底有什么，特别是他的invoke方法。</p>
+
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">MapperProxy</span><span class="o">.</span><span class="na">class</span>
+  
+<span class="kd">public</span> <span class="nc">Object</span> <span class="nf">invoke</span><span class="o">(</span><span class="nc">Object</span> <span class="n">proxy</span><span class="o">,</span> <span class="nc">Method</span> <span class="n">method</span><span class="o">,</span> <span class="nc">Object</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Throwable</span> <span class="o">{</span>
+    <span class="o">...</span><span class="err">省略</span><span class="o">...</span>
+    <span class="nc">MapperMethod</span> <span class="n">mapperMethod</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">cachedMapperMethod</span><span class="o">(</span><span class="n">method</span><span class="o">);</span>
+    <span class="k">return</span> <span class="n">mapperMethod</span><span class="o">.</span><span class="na">execute</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">sqlSession</span><span class="o">,</span> <span class="n">args</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div>    </div>
+
+    <p>invoke方法中，重点是调用了mapperMethod.execute()。这个mapperMethod就是:<strong>被代理接口A，A中有方法a()，代理类实例((A)proxyA).a()中的这个a，就是method,而mapperMethod就是method被包装了一层。</strong>换而言之，(session.getMapper(XxxMapper)).interfaceMethod()时，都在走mapperMethod.execute()这个方法。</p>
+  </li>
+  <li>
+    <p>下面我们来看mapperMethod.execute这个方法。</p>
+
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">MapperMethod</span><span class="o">.</span><span class="na">class</span>
+  
+<span class="kd">public</span> <span class="nc">Object</span> <span class="nf">execute</span><span class="o">(</span><span class="nc">SqlSession</span> <span class="n">sqlSession</span><span class="o">,</span> <span class="nc">Object</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+    <span class="nc">Object</span> <span class="n">result</span><span class="o">;</span>
+    <span class="nc">Object</span> <span class="n">param</span><span class="o">;</span>
+    <span class="k">switch</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">command</span><span class="o">.</span><span class="na">getType</span><span class="o">())</span> <span class="o">{</span>
+    <span class="o">...</span><span class="err">省略</span><span class="o">...</span>
+    <span class="k">case</span> <span class="nl">SELECT:</span>
+    <span class="o">...</span><span class="err">省略</span><span class="o">...</span>
+    <span class="n">param</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">method</span><span class="o">.</span><span class="na">convertArgsToSqlCommandParam</span><span class="o">(</span><span class="n">args</span><span class="o">);</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">sqlSession</span><span class="o">.</span><span class="na">selectOne</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">command</span><span class="o">.</span><span class="na">getName</span><span class="o">(),</span> <span class="n">param</span><span class="o">);</span>
+    <span class="o">...</span><span class="err">省略</span><span class="o">...</span>
+    <span class="o">}</span>
+    <span class="o">...</span><span class="err">省略</span><span class="o">...</span>
+<span class="o">}</span>
+</code></pre></div>    </div>
+
+    <p>这个方法做了两件事，1.对参数用参数解析器转化为JDBCType的参数，这边不是重点。2.执行sqlSession.selectOne()，当然我删去了一些代码，为讲清楚，只讲selectOne()即可，其他都是大同小异的。又回到最初的起点，呆呆地望着镜子前。 sqlSession又见面了，发现了么？sqlSession先是把getMapper交给configuration做，然后自己还能执行类似selecOne，update之类的命令，这是因为sqlSession是暴露给用户的接口，如果用户要用传统方式，就可以直接调用selectOne之类的方法，比如Employee employee = session.selectOne(“mybatisDemo.dao.EmployeeMapper.getEmpById”,1);如果用户想用mapper.xml和mapper接口的方法，就getMapper获得代理实例然后调用接口方法即可。所以本质上，所有跟JDBC打交道的还是sqlsession的select、update等方法</p>
+
+    <p>现在还都是表面功夫，直到sqlSession.selectOne才开始真正的辉煌旅程。小结一下，目前我们看到的MyBatis组件包括SqlSessionFactoryBuilder、SqlSessionFactory、SqlSession。还未看到的有，Executor，ParameterHandler，StatementHandler，ResultSetHandler。这几个部件都会在之后出现。</p>
+  </li>
+  <li>
+    <p>下面来分析session.selectOne()。selectOne内部调用的还是selectList，因此直接看SqlSession的实现类DefaultSqlSession中的方法。可以发现，Executor组件终于出现了，而这个组件才是真正执行query()方法的组件。SqlSession真的是领导，getMapper交给config做，select等脏活累活又交给Executor完成。Executor.query的入参有什么？被代理方法参数parameter，ms用于动态sql的。</p>
+
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">DefaultSqlSession</span><span class="o">.</span><span class="na">class</span>
+  
+<span class="kd">public</span> <span class="o">&lt;</span><span class="no">E</span><span class="o">&gt;</span> <span class="nc">List</span><span class="o">&lt;</span><span class="no">E</span><span class="o">&gt;</span> <span class="nf">selectList</span><span class="o">(</span><span class="nc">String</span> <span class="n">statement</span><span class="o">,</span> <span class="nc">Object</span> <span class="n">parameter</span><span class="o">,</span> <span class="nc">RowBounds</span> <span class="n">rowBounds</span><span class="o">)</span> <span class="o">{</span>
+    <span class="nc">List</span> <span class="n">var5</span><span class="o">;</span>
+    <span class="o">...</span><span class="err">省略</span><span class="o">...</span>
+    <span class="nc">MappedStatement</span> <span class="n">ms</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">configuration</span><span class="o">.</span><span class="na">getMappedStatement</span><span class="o">(</span><span class="n">statement</span><span class="o">);</span>
+    <span class="n">var5</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">executor</span><span class="o">.</span><span class="na">query</span><span class="o">(</span><span class="n">ms</span><span class="o">,</span> <span class="k">this</span><span class="o">.</span><span class="na">wrapCollection</span><span class="o">(</span><span class="n">parameter</span><span class="o">),</span> <span class="n">rowBounds</span><span class="o">,</span> <span class="nc">Executor</span><span class="o">.</span><span class="na">NO_RESULT_HANDLER</span><span class="o">);</span>
+    <span class="o">...</span><span class="err">省略</span><span class="o">...</span>
+    <span class="k">return</span> <span class="n">var5</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div>    </div>
+
+    <p>下面去看query方法,在Executor的一个抽象实现类，其实也就是模板类BaseExecutor中。</p>
+
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">BaseExecutor</span><span class="o">.</span><span class="na">class</span>
+  
+<span class="kd">public</span> <span class="o">&lt;</span><span class="no">E</span><span class="o">&gt;</span> <span class="nc">List</span><span class="o">&lt;</span><span class="no">E</span><span class="o">&gt;</span> <span class="nf">query</span><span class="o">(</span><span class="nc">MappedStatement</span> <span class="n">ms</span><span class="o">,</span> <span class="nc">Object</span> <span class="n">parameter</span><span class="o">,</span> <span class="nc">RowBounds</span> <span class="n">rowBounds</span><span class="o">,</span> <span class="n">resultsetHandler</span> <span class="n">resultsetHandler</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">SQLException</span> <span class="o">{</span>
+    <span class="nc">BoundSql</span> <span class="n">boundSql</span> <span class="o">=</span> <span class="n">ms</span><span class="o">.</span><span class="na">getBoundSql</span><span class="o">(</span><span class="n">parameter</span><span class="o">);</span>
+    <span class="nc">CacheKey</span> <span class="n">key</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">createCacheKey</span><span class="o">(</span><span class="n">ms</span><span class="o">,</span> <span class="n">parameter</span><span class="o">,</span> <span class="n">rowBounds</span><span class="o">,</span> <span class="n">boundSql</span><span class="o">);</span>
+    <span class="k">return</span> <span class="k">this</span><span class="o">.</span><span class="na">query</span><span class="o">(</span><span class="n">ms</span><span class="o">,</span> <span class="n">parameter</span><span class="o">,</span> <span class="n">rowBounds</span><span class="o">,</span> <span class="n">resultsetHandler</span><span class="o">,</span> <span class="n">key</span><span class="o">,</span> <span class="n">boundSql</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div>    </div>
+
+    <p>BoundSql就是动态sql，key是将sql语句，入参组合起来作为缓存参数，即：如果sql语句相同且参数一样，那可以认为两个sql语句会返回同样的结果（缓存未失效的情况下）。query方法中进一步调用doQuery方法，这个方法在BaseExecutor中只给出抽象方法，交给子类去继承实现。这个子类就是SimpleExecutor。</p>
+
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">SimpleExecutor</span><span class="o">.</span><span class="na">class</span>
+  
+<span class="kd">public</span> <span class="o">&lt;</span><span class="no">E</span><span class="o">&gt;</span> <span class="nc">List</span><span class="o">&lt;</span><span class="no">E</span><span class="o">&gt;</span> <span class="nf">doQuery</span><span class="o">(</span><span class="nc">MappedStatement</span> <span class="n">ms</span><span class="o">,</span> <span class="nc">Object</span> <span class="n">parameter</span><span class="o">,</span> <span class="nc">RowBounds</span> <span class="n">rowBounds</span><span class="o">,</span> <span class="n">resultsetHandler</span> <span class="n">resultsetHandler</span><span class="o">,</span> <span class="nc">BoundSql</span> <span class="n">boundSql</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">SQLException</span> <span class="o">{</span>
+    <span class="nc">Statement</span> <span class="n">stmt</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+  
+    <span class="nc">List</span> <span class="n">var9</span><span class="o">;</span>
+    <span class="k">try</span> <span class="o">{</span>
+        <span class="nc">Configuration</span> <span class="n">configuration</span> <span class="o">=</span> <span class="n">ms</span><span class="o">.</span><span class="na">getConfiguration</span><span class="o">();</span>
+        <span class="nc">StatementHandler</span> <span class="n">handler</span> <span class="o">=</span> <span class="n">configuration</span><span class="o">.</span><span class="na">newStatementHandler</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">wrapper</span><span class="o">,</span> <span class="n">ms</span><span class="o">,</span> <span class="n">parameter</span><span class="o">,</span> <span class="n">rowBounds</span><span class="o">,</span> <span class="n">resultsetHandler</span><span class="o">,</span> <span class="n">boundSql</span><span class="o">);</span>
+        <span class="n">stmt</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">prepareStatement</span><span class="o">(</span><span class="n">handler</span><span class="o">,</span> <span class="n">ms</span><span class="o">.</span><span class="na">getStatementLog</span><span class="o">());</span>
+        <span class="n">var9</span> <span class="o">=</span> <span class="n">handler</span><span class="o">.</span><span class="na">query</span><span class="o">(</span><span class="n">stmt</span><span class="o">,</span> <span class="n">resultsetHandler</span><span class="o">);</span>
+    <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">closeStatement</span><span class="o">(</span><span class="n">stmt</span><span class="o">);</span>
+    <span class="o">}</span>
+  
+    <span class="k">return</span> <span class="n">var9</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div>    </div>
+
+    <p>这里出现了StatementHandler这个组件，先别急着点进newStatementHandler()方法，先看一下StatementHandler接口，发现这个接口有ParameterHandler getParameterHandler();方法和<E> List<E> query(Statement var1, resultsetHandler var2)。这时候，ParmeterHandler和resultsetHandler两大组件也出现了。所以这三个组件的关系是，StatementHandler中需要通过ParamterHandler处理参数，然后将结果通过resultsetHandler处理成要求的JavaBean、Map、List后输出。</E></E></p>
+
+    <p><strong>小结一下：SqlSession将查询等任务交给Executor接口实现类完成，Executor内有StatementHandler，StatementHandler内有ParameterHandler和resultsetHandler，分别进行参数处理和结果处理。</strong></p>
+  </li>
+  <li>
+    <p>还没讲newStatementHandler()这个方法呢，为什么要现在讲？</p>
+
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Configuration</span><span class="o">.</span><span class="na">class</span>
+  
+<span class="kd">public</span> <span class="nc">ParameterHandler</span> <span class="nf">newParameterHandler</span><span class="o">(</span><span class="nc">MappedStatement</span> <span class="n">mappedStatement</span><span class="o">,</span> <span class="nc">Object</span> <span class="n">parameterObject</span><span class="o">,</span> <span class="nc">BoundSql</span> <span class="n">boundSql</span><span class="o">)</span> <span class="o">{</span>
+    <span class="nc">ParameterHandler</span> <span class="n">parameterHandler</span> <span class="o">=</span> <span class="n">mappedStatement</span><span class="o">.</span><span class="na">getLang</span><span class="o">().</span><span class="na">createParameterHandler</span><span class="o">(</span><span class="n">mappedStatement</span><span class="o">,</span> <span class="n">parameterObject</span><span class="o">,</span> <span class="n">boundSql</span><span class="o">);</span>
+    <span class="n">parameterHandler</span> <span class="o">=</span> <span class="o">(</span><span class="nc">ParameterHandler</span><span class="o">)</span><span class="k">this</span><span class="o">.</span><span class="na">interceptorChain</span><span class="o">.</span><span class="na">pluginAll</span><span class="o">(</span><span class="n">parameterHandler</span><span class="o">);</span>
+    <span class="k">return</span> <span class="n">parameterHandler</span><span class="o">;</span>
+<span class="o">}</span>
+  
+<span class="kd">public</span> <span class="nc">ResultSetHandler</span> <span class="nf">newResultSetHandler</span><span class="o">(</span><span class="nc">Executor</span> <span class="n">executor</span><span class="o">,</span> <span class="nc">MappedStatement</span> <span class="n">mappedStatement</span><span class="o">,</span> <span class="nc">RowBounds</span> <span class="n">rowBounds</span><span class="o">,</span> <span class="nc">ParameterHandler</span> <span class="n">parameterHandler</span><span class="o">,</span> <span class="n">resultsetHandler</span> <span class="n">resultsetHandler</span><span class="o">,</span> <span class="nc">BoundSql</span> <span class="n">boundSql</span><span class="o">)</span> <span class="o">{</span>
+    <span class="nc">ResultSetHandler</span> <span class="n">resultSetHandler</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">DefaultResultSetHandler</span><span class="o">(</span><span class="n">executor</span><span class="o">,</span> <span class="n">mappedStatement</span><span class="o">,</span> <span class="n">parameterHandler</span><span class="o">,</span> <span class="n">resultsetHandler</span><span class="o">,</span> <span class="n">boundSql</span><span class="o">,</span> <span class="n">rowBounds</span><span class="o">);</span>
+    <span class="nc">ResultSetHandler</span> <span class="n">resultSetHandler</span> <span class="o">=</span> <span class="o">(</span><span class="nc">ResultSetHandler</span><span class="o">)</span><span class="k">this</span><span class="o">.</span><span class="na">interceptorChain</span><span class="o">.</span><span class="na">pluginAll</span><span class="o">(</span><span class="n">resultSetHandler</span><span class="o">);</span>
+    <span class="k">return</span> <span class="n">resultSetHandler</span><span class="o">;</span>
+<span class="o">}</span>
+  
+<span class="kd">public</span> <span class="nc">StatementHandler</span> <span class="nf">newStatementHandler</span><span class="o">(</span><span class="nc">Executor</span> <span class="n">executor</span><span class="o">,</span> <span class="nc">MappedStatement</span> <span class="n">mappedStatement</span><span class="o">,</span> <span class="nc">Object</span> <span class="n">parameterObject</span><span class="o">,</span> <span class="nc">RowBounds</span> <span class="n">rowBounds</span><span class="o">,</span> <span class="n">resultsetHandler</span> <span class="n">resultsetHandler</span><span class="o">,</span> <span class="nc">BoundSql</span> <span class="n">boundSql</span><span class="o">)</span> <span class="o">{</span>
+    <span class="nc">StatementHandler</span> <span class="n">statementHandler</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">RoutingStatementHandler</span><span class="o">(</span><span class="n">executor</span><span class="o">,</span> <span class="n">mappedStatement</span><span class="o">,</span> <span class="n">parameterObject</span><span class="o">,</span> <span class="n">rowBounds</span><span class="o">,</span> <span class="n">resultsetHandler</span><span class="o">,</span> <span class="n">boundSql</span><span class="o">);</span>
+    <span class="nc">StatementHandler</span> <span class="n">statementHandler</span> <span class="o">=</span> <span class="o">(</span><span class="nc">StatementHandler</span><span class="o">)</span><span class="k">this</span><span class="o">.</span><span class="na">interceptorChain</span><span class="o">.</span><span class="na">pluginAll</span><span class="o">(</span><span class="n">statementHandler</span><span class="o">);</span>
+    <span class="k">return</span> <span class="n">statementHandler</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div>    </div>
+
+    <p>值得注意的是interceptorChain，拦截器链，这里的拦截器链通过pluginAll对几个Handler进行织入。织入的是什么代码呢？是你写的拦截器代码。回忆一下MyBatis写拦截器代码的时候要指定哪些呢？1.要指定针对Exector，ParameterHandler，StatementHandler，或者resultsetHandler进行拦截2.要指定针对什么方法拦截。针对拦截器这一部分的原理，建议阅读</p>
+
+    <blockquote>
+      <p>https://www.jianshu.com/p/b82d0a95b2f3</p>
+    </blockquote>
+
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Intercepts</span><span class="o">({</span><span class="nd">@Signature</span><span class="o">(</span><span class="n">type</span><span class="o">=</span> <span class="nc">Executor</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">method</span> <span class="o">=</span> <span class="s">"update"</span><span class="o">,</span> <span class="n">args</span> <span class="o">=</span> <span class="o">{</span><span class="nc">MappedStatement</span><span class="o">.</span><span class="na">class</span><span class="o">,</span><span class="nc">Object</span><span class="o">.</span><span class="na">class</span><span class="o">})})</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">ExamplePlugin</span> <span class="kd">implements</span> <span class="nc">Interceptor</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="nc">Object</span> <span class="nf">intercept</span><span class="o">(</span><span class="nc">Invocation</span> <span class="n">invocation</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Throwable</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">invocation</span><span class="o">.</span><span class="na">proceed</span><span class="o">();</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="nc">Object</span> <span class="nf">plugin</span><span class="o">(</span><span class="nc">Object</span> <span class="n">target</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="nc">Plugin</span><span class="o">.</span><span class="na">wrap</span><span class="o">(</span><span class="n">target</span><span class="o">,</span> <span class="k">this</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setProperties</span><span class="o">(</span><span class="nc">Properties</span> <span class="n">properties</span><span class="o">)</span> <span class="o">{</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div>    </div>
+
+    <p>这边拦截器和前面Mapper接口都是用到了动态代理。前面Mapper接口是通过动态代理技术代理Mapper接口，实现了即使我们不用谢Mapper接口实现类仍然可以调用Mapper接口内方法，因为MyBatis帮我们内部实现了一个代理类实例。这边的拦截器说的是，对于3个Handler和1个Exector接口，他们的所有接口方法都可以被拦截。所以这里拦截器所拦截的只能是这4个接口的实现类。这个拦截器主要的思路就是，被代理的实例叫target，然后把这个实例代理后，返回一个代理类实例叫proxyTarget，然后把这个proxyTarget再赋值给target，然后target再被其他代理，结果就是代理类代理代理类代理代理类。。。。层层包裹。当你调用最外层代理类实例时会从外向内一层一层执行前增强代码，然后再从内向外一层一层执行后增强代码。</p>
+  </li>
+</ul>
+
+<h2 id="快速实现一个mybatis核心功能">快速实现一个MyBatis核心功能</h2>
+
+<ol>
+  <li>
+    <p>DepartmentMapper.xml和DepartmentMapper接口均已完成，是如何完成departmentMapper.getDeptById(1)之后就直接获得Department对象的呢？主要是以下的核心代码：</p>
+
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Test</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">testDynamicProxy</span><span class="o">(){</span>
+    <span class="nc">Object</span> <span class="n">proxy</span> <span class="o">=</span> <span class="nc">Proxy</span><span class="o">.</span><span class="na">newProxyInstance</span><span class="o">(</span><span class="nc">CoreFunction</span><span class="o">.</span><span class="na">class</span><span class="o">.</span><span class="na">getClassLoader</span><span class="o">(),</span>
+            <span class="k">new</span> <span class="nc">Class</span><span class="o">[]{</span><span class="nc">DepartmentMapper</span><span class="o">.</span><span class="na">class</span><span class="o">},</span> <span class="k">new</span> <span class="nc">InvocationHandler</span><span class="o">()</span> <span class="o">{</span>
+                <span class="nd">@Override</span>
+                <span class="kd">public</span> <span class="nc">Object</span> <span class="nf">invoke</span><span class="o">(</span><span class="nc">Object</span> <span class="n">proxy</span><span class="o">,</span> <span class="nc">Method</span> <span class="n">method</span><span class="o">,</span> <span class="nc">Object</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Throwable</span> <span class="o">{</span>
+                    <span class="nc">String</span> <span class="n">sql</span> <span class="o">=</span> <span class="s">"select id,dept_name departmentName from t_dept where id = "</span> <span class="o">+</span> <span class="n">args</span><span class="o">[</span><span class="mi">0</span><span class="o">];</span>
+                    <span class="nc">Connection</span> <span class="n">connection</span> <span class="o">=</span> <span class="nc">DBUtil</span><span class="o">.</span><span class="na">getConnection</span><span class="o">();</span>
+                    <span class="nc">Statement</span> <span class="n">statement</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="na">createStatement</span><span class="o">();</span>
+                    <span class="nc">ResultSet</span> <span class="n">resultSet</span> <span class="o">=</span> <span class="n">statement</span><span class="o">.</span><span class="na">executeQuery</span><span class="o">(</span><span class="n">sql</span><span class="o">);</span>
+                    <span class="k">while</span><span class="o">(</span><span class="n">resultSet</span><span class="o">.</span><span class="na">next</span><span class="o">()){</span>
+                        <span class="kt">int</span> <span class="n">id</span> <span class="o">=</span> <span class="n">resultSet</span><span class="o">.</span><span class="na">getInt</span><span class="o">(</span><span class="mi">1</span><span class="o">);</span>
+                        <span class="nc">String</span> <span class="n">departmentName</span> <span class="o">=</span> <span class="n">resultSet</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span><span class="s">"departmentName"</span><span class="o">);</span>
+                        <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span><span class="nc">Object</span><span class="o">&gt;</span> <span class="n">map</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashMap</span><span class="o">&lt;&gt;();</span>
+                        <span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"id"</span><span class="o">,</span><span class="n">id</span><span class="o">);</span>
+                        <span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"departmentName"</span><span class="o">,</span><span class="n">departmentName</span><span class="o">);</span>
+                        <span class="nc">Department</span> <span class="n">department</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Department</span><span class="o">();</span>
+                        <span class="nc">BeanUtils</span><span class="o">.</span><span class="na">populate</span><span class="o">(</span><span class="n">department</span><span class="o">,</span><span class="n">map</span><span class="o">);</span>
+                        <span class="k">return</span> <span class="n">department</span><span class="o">;</span>
+                    <span class="o">}</span>
+                    <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+                <span class="o">}</span>
+            <span class="o">});</span>
+    <span class="nc">Department</span> <span class="n">department</span> <span class="o">=</span> <span class="o">((</span><span class="nc">DepartmentMapper</span><span class="o">)</span><span class="n">proxy</span><span class="o">).</span><span class="na">getDeptById</span><span class="o">(</span><span class="mi">1</span><span class="o">);</span>
+    <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">department</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div>    </div>
+
+    <p>核心思路就是这样：用一个动态代理来代理这个接口，然后在invoke中获得数据库连接，调用statement，封装参数，执行sql后将resultSet封装成一个javaBean返回。</p>
+  </li>
+  <li>除了核心代码，还有什么问题要解决？1.sql语句要从xml中获取。2.装配参数要进行转化，从javaBean转化成JDBCType。3.采用连接池，并且可以配置数据源。4.resultSet封装成javaBean。5.用拦截器实现插件。6.缓存功能。7.实现多表查询。8.如何和Spring相结合。</li>
+  <li>针对以上提出解决方案。
+    <ol>
+      <li>Dom4j技术获取。</li>
+      <li>BeanUtils实现Bean向Map的转换，即可获得对象对应属性与属性值之间关系。在xml中比如：<code class="highlighter-rouge">select * from t_employee where id = #{id}</code>#{xxx}中xxx即为map的key，获取值后填充。如果是#{}，则采用PreparedStatement填充占位符？，如果是${}用Statement,以字符串拼接形式完成sql。</li>
+      <li>采用工厂模式可以切换内置的Druid或DBCP数据源，如果用户想自己配置其他的，可以通过setter注入的方式向DefaultSessionFactory中注入数据源。</li>
+      <li>可以通过ResultSetMetaData获取列名，列名和JavaBean的参数名相对应。</li>
+      <li>利用动态代理，对4大组件进代理，在InvocationHandler的invoke方法中调用Interceptor实现类，Interceptor实现类中有intercept(Invocation)方法，invocation.proceed调用被代理实例方法，intercept中其他代码为代理代码。</li>
+      <li>这边可以用grauva实现，或者自己手写一个LRU，然后用定时任务队列实现超时失效。</li>
+      <li>目前没考虑好。</li>
+      <li>整体写完后重构。</li>
+    </ol>
+  </li>
+</ol>
+
+<h2 id="getmapper流程">getMapper流程</h2>
+
+<h3 id="getmapper主要流程">getMapper主要流程</h3>
+
+<p><img src="http://img.sonihr.com/12fe465b-1895-4b5e-ba91-c6625ba8fea6.jpg" alt="img" /></p>
+
+<ol>
+  <li>框架目录结构</li>
+  <li>batisDemo包和resource文件夹中xml文件是用于测试框架的，具体框架的实现通过com.sonihr.batis包实现。
+    <ol>
+      <li>具体来说，quickStart包中存放了一些和框架无关的代码，主要是我用于测试一些基础功能的，比如JDBC，连接池，动态代理。</li>
+      <li>session中包括SqlSessionFactory、SqlSession组件，defaults包中是这两个接口的默认实现类。</li>
+      <li>binding中就牵扯到动态代理了。</li>
+    </ol>
+  </li>
+  <li>
+    <p>getMapper流程。和之前分析的Mybatis的流程类似，通过SqlSessionFactorybuilder的build方法获取SqlSessionFactory，并且在这里做configuration的初始化工作，因为目前还没有读取xml文件，因此字符串直接写在configuration的构造函数中。SqlSessionFactory的openSession方法获取sqlSession。SqlSession表示一个会话，其中组合了Conncetion和Configuration，逻辑也很简单，一个回话必然占据一个连接。这个会话又是直接暴露给用户的，因此必须有Configuration参数，通过传递这个参数来分配给其他组件干活。SqlSession.getMapper实际上是交给configuration去做，之前说了configuration是sqlsession的一个成员变量。configuration又交给其成员变量MapperRegistry，这个类目前的功能是调用MapperProxyFactory工厂类创建一个代理类实例。</p>
+
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">getMapperTest</span><span class="o">.</span><span class="na">class</span>
+   
+<span class="nd">@Test</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">getMapper</span><span class="o">()</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+    <span class="nc">SqlSession</span> <span class="n">sqlSession</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">SqlSessionFactoryBuilder</span><span class="o">().</span><span class="na">build</span><span class="o">().</span><span class="na">openSession</span><span class="o">();</span>
+    <span class="nc">DepartmentMapper</span> <span class="n">departmentMapper</span> <span class="o">=</span> <span class="n">sqlSession</span><span class="o">.</span><span class="na">getMapper</span><span class="o">(</span><span class="nc">DepartmentMapper</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+    <span class="nc">Department</span> <span class="n">department</span> <span class="o">=</span> <span class="n">departmentMapper</span><span class="o">.</span><span class="na">getDeptById</span><span class="o">(</span><span class="mi">1</span><span class="o">);</span>
+    <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">department</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>getMapper讲到这里，就要去说明，怎么创建的代理的实例。</p>
+
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">MapperProxyFactory</span><span class="o">.</span><span class="na">class</span>
+   
+<span class="kd">private</span> <span class="no">T</span> <span class="nf">newInstance</span><span class="o">(</span><span class="nc">MapperProxy</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="n">mapperProxy</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="o">(</span><span class="no">T</span><span class="o">)</span> <span class="nc">Proxy</span><span class="o">.</span><span class="na">newProxyInstance</span><span class="o">(</span><span class="n">configuration</span><span class="o">.</span><span class="na">getMapperInterface</span><span class="o">().</span><span class="na">getClassLoader</span><span class="o">(),</span> <span class="k">new</span> <span class="nc">Class</span><span class="o">[]{</span><span class="k">this</span><span class="o">.</span><span class="na">configuration</span><span class="o">.</span><span class="na">getMapperInterface</span><span class="o">()},</span> <span class="n">mapperProxy</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div>    </div>
+
+    <p>由此看见，mapperProxy必然是一个InvocationHandler的实现类。如果实现了InvocationHandler接口，那必然要重写invoke方法。</p>
+
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Override</span>
+<span class="kd">public</span> <span class="nc">Object</span> <span class="nf">invoke</span><span class="o">(</span><span class="nc">Object</span> <span class="n">proxy</span><span class="o">,</span> <span class="nc">Method</span> <span class="n">method</span><span class="o">,</span> <span class="nc">Object</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Throwable</span> <span class="o">{</span>
+    <span class="nc">PreparedStatement</span> <span class="n">ps</span> <span class="o">=</span> <span class="n">sqlSession</span><span class="o">.</span><span class="na">getConnection</span><span class="o">().</span><span class="na">prepareStatement</span><span class="o">(</span><span class="n">sql</span><span class="o">);</span>
+    <span class="n">ps</span><span class="o">.</span><span class="na">setInt</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="o">(</span><span class="nc">Integer</span><span class="o">)</span> <span class="n">args</span><span class="o">[</span><span class="mi">0</span><span class="o">]);</span>
+    <span class="nc">ResultSet</span> <span class="n">rs</span> <span class="o">=</span> <span class="n">ps</span><span class="o">.</span><span class="na">executeQuery</span><span class="o">();</span>
+    <span class="nc">ResultSetMetaData</span> <span class="n">rsmd</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="na">getMetaData</span><span class="o">();</span>
+    <span class="nc">Object</span> <span class="n">resBean</span> <span class="o">=</span> <span class="n">resultClazz</span><span class="o">.</span><span class="na">newInstance</span><span class="o">();</span>
+    <span class="nc">Field</span><span class="o">[]</span> <span class="n">fields</span> <span class="o">=</span> <span class="n">resultClazz</span><span class="o">.</span><span class="na">getDeclaredFields</span><span class="o">();</span>
+    <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span><span class="nc">Object</span><span class="o">&gt;</span> <span class="n">map</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashMap</span><span class="o">&lt;&gt;();</span>
+    <span class="k">while</span> <span class="o">(</span><span class="n">rs</span><span class="o">.</span><span class="na">next</span><span class="o">()){</span>
+        <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">rsmd</span><span class="o">.</span><span class="na">getColumnCount</span><span class="o">();</span><span class="n">i</span><span class="o">++){</span>
+            <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">i</span><span class="o">);</span>
+            <span class="nc">String</span> <span class="n">name</span> <span class="o">=</span> <span class="n">rsmd</span><span class="o">.</span><span class="na">getColumnLabel</span><span class="o">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="o">);</span>
+            <span class="k">for</span><span class="o">(</span><span class="nc">Field</span> <span class="nl">field:</span><span class="n">fields</span><span class="o">){</span>
+                <span class="k">if</span><span class="o">(</span><span class="n">field</span><span class="o">.</span><span class="na">getName</span><span class="o">().</span><span class="na">equals</span><span class="o">(</span><span class="n">name</span><span class="o">)){</span>
+                    <span class="nc">Object</span> <span class="n">object</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="na">getObject</span><span class="o">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="o">);</span>
+                    <span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">name</span><span class="o">,</span><span class="n">object</span><span class="o">);</span>
+                    <span class="k">break</span><span class="o">;</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="nc">BeanUtils</span><span class="o">.</span><span class="na">populate</span><span class="o">(</span><span class="n">resBean</span><span class="o">,</span><span class="n">map</span><span class="o">);</span>
+    <span class="k">return</span> <span class="n">resBean</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div>    </div>
+
+    <p>这段代码其实就是来自quickStart包的CoreFunction中的testNameSpaceAndSql方法。在这个invoke方法中，我们预设了sql语句要填充的只有1个问号，且为int类型。并且预设了数据库字段名一定和javaBean的成员变量同名。</p>
+  </li>
+</ol>
+
+<h3 id="可配置的数据源">可配置的数据源</h3>
+
+<ol>
+  <li>
+    <p>看一下Spring中是如何配置的</p>
+
+    <div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;bean</span> <span class="na">id=</span><span class="s">"sqlSessionFactory"</span> <span class="na">class=</span><span class="s">"org.mybatis.spring.SqlSessionFactoryBean"</span><span class="nt">&gt;</span>
+    <span class="c">&lt;!-- 注入数据库连接池 --&gt;</span>
+    <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"dataSource"</span> <span class="na">ref=</span><span class="s">"dataSource"</span><span class="nt">/&gt;</span>
+</code></pre></div>    </div>
+
+    <p>在Factory中注入了一个DataSource，又因为是面向接口编程，因此datasource在Spring中配置为什么，就是什么。</p>
+  </li>
+  <li>
+    <p>如果没有Spring，我们可以通过set方法进行手动注入。这里我采用静态工厂的形式，支持DBCP与Druid两个数据源。在datasource包中，有一个DataSourceFactory接口，该接口规定了getDataSource方法。DBCPDataSourceFactory和DruidDataSourceFactory都实现了getDatasource方法，并返回相应类型的datasource。为了让configuration中的datasource与具体的datasourceFactory解耦，因此用DefaultDataSourceFactory来生产DBCP和Druid。</p>
+
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">DefaultDataSourceFactory</span> <span class="kd">implements</span> <span class="nc">DataSourceFactory</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="nc">DataSource</span> <span class="nf">getDataSource</span><span class="o">(</span><span class="nc">String</span> <span class="n">name</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">DataSource</span> <span class="n">dataSource</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="k">if</span><span class="o">(</span><span class="n">name</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="s">"org.apache.commons.dbcp2.BasicDataSource"</span><span class="o">))</span>
+            <span class="n">dataSource</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">DBCPDataSourceFactory</span><span class="o">().</span><span class="na">getDataSource</span><span class="o">();</span>
+        <span class="k">else</span>
+            <span class="n">dataSource</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">DruidDataSourceFactory</span><span class="o">().</span><span class="na">getDataSource</span><span class="o">();</span>
+        <span class="k">return</span> <span class="n">dataSource</span><span class="o">;</span>
+    <span class="o">}</span>
+   
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="nc">DataSource</span> <span class="nf">getDataSource</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="k">this</span><span class="o">.</span><span class="na">getDataSource</span><span class="o">(</span><span class="s">"com.alibaba.druid.pool.DruidDataSource"</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>那用户怎么任意配置数据源呢？在DefaultSqlSession中暴露出database的set方法，用户可以选择创建数据源然后通过set方法注入。</p>
+  </li>
+</ol>
+
+<h2 id="四大组件">四大组件</h2>
+
+<h3 id="四大组件的关系">四大组件的关系</h3>
+
+<ul>
+  <li>Executor中有StatementHandler实例，StatementHandler中有ParameterHandler和resultsetHandler实例。</li>
+  <li>四大组件的初始化，都是在Configuration中进行。</li>
+  <li>四大组件在初始化的时候，都会经过拦截器代理。</li>
+</ul>
+
+<h3 id="executor">Executor</h3>
+
+<ol>
+  <li>getMapper中的核心是MapperProxy，这是InvocationHandler的实现类，因此需要实现invoke方法，在此方法中调用mapperMethod.execute方法，MapperMethod是对method的封装，在MyBatis中需要根据执行的sql语句类型和sql返回值来调用不同的方法，因为本文中目前仅仅针对单条查询，因此这边MapperMethod只是简单地封装了method而已。execute方法调用sqlSession方法的selectOne方法进行查询，而这个方法交给Executor接口的实例去具体的查询，接口方法叫做query()。</li>
+  <li>query()方法中用doQuery方法，这个方法中需要从configuration中获得StatementHandler的实现类，先通过preparedStatement方法（注意这个是方法）完成参数转换（这个方法中调用parameterize方法，这个方法就是利用StatementHandler组件中的ParameterHandler完成的）。</li>
+  <li>参数转换完毕后，statementHandler.query传入resultsetHandler和statement，进行JDBC层面的查询，并通过resultHanler返回封装后的结果。</li>
+</ol>
+
+<h3 id="statementhandler">StatementHandler</h3>
+
+<ol>
+  <li>
+    <p>这个组件在Configuration中初始化，在Executor中被调用。Executor实现类中利用configuration.newStatementHandler创建一个statementHandler。先通过parameterHandler进行参数匹配，然后通过query进行查询。查询的结果通过resultsetHandler进行封装。</p>
+
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">SimpleExecutor</span> <span class="kd">extends</span> <span class="nc">BaseExecutor</span><span class="o">{</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="o">&lt;</span><span class="no">E</span><span class="o">&gt;</span> <span class="nc">List</span><span class="o">&lt;</span><span class="no">E</span><span class="o">&gt;</span> <span class="nf">doQuery</span><span class="o">(</span><span class="nc">Connection</span> <span class="n">connection</span><span class="o">,</span><span class="nc">Configuration</span> <span class="n">conf</span><span class="o">,</span> <span class="nc">Object</span><span class="o">[]</span> <span class="n">args</span><span class="o">,</span> <span class="nc">ResultSetHandler</span> <span class="n">resultSetHandler</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+        <span class="cm">/**
+        * 1. 在Configuration中创建StatementHandler实例handler，StatementHandler中有ParameterHandler和ResultHandler组件实例
+        * 2. Executor实现类调用preparedStatement方法，这个方法中的prepare方法返回Statement或者PreparedStatement
+        * 3. statementHandler调用parameterize方法，调用parameterHandler组件实例处理参数
+        * */</span>
+        <span class="nc">StatementHandler</span> <span class="n">handler</span> <span class="o">=</span> <span class="n">conf</span><span class="o">.</span><span class="na">newStatementHandler</span><span class="o">(</span><span class="n">args</span><span class="o">);</span>
+        <span class="nc">Statement</span> <span class="n">statement</span> <span class="o">=</span> <span class="n">preparedStatement</span><span class="o">(</span><span class="n">connection</span><span class="o">,</span><span class="n">handler</span><span class="o">);</span>
+        <span class="k">return</span> <span class="n">handler</span><span class="o">.</span><span class="na">query</span><span class="o">(</span><span class="n">statement</span><span class="o">,</span> <span class="n">resultSetHandler</span><span class="o">);</span>
+    <span class="o">}</span>
+   
+    <span class="kd">private</span> <span class="nc">Statement</span> <span class="nf">preparedStatement</span><span class="o">(</span><span class="nc">Connection</span> <span class="n">connection</span><span class="o">,</span><span class="nc">StatementHandler</span> <span class="n">handler</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">SQLException</span> <span class="o">{</span>
+        <span class="nc">Statement</span> <span class="n">statement</span> <span class="o">=</span> <span class="n">handler</span><span class="o">.</span><span class="na">prepare</span><span class="o">(</span><span class="n">connection</span><span class="o">);</span>
+        <span class="n">handler</span><span class="o">.</span><span class="na">parameterize</span><span class="o">(</span><span class="n">statement</span><span class="o">);</span><span class="c1">//对参数进行封装</span>
+        <span class="k">return</span> <span class="n">statement</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>如注释中所示，首先创建一个StatementHandler，然后preparedStatement方法中做了两件事，1是返回statement，但是这个statement既可能是Statement也可能是PreparedStatement，要根据sql语句的类型判断。2.对参数进行封装，如果是preparedStatement就要用setObject(i,obj)的方式注入参数，如果是Statement类型，通过字符串拼接的方式实现。3.最后调用statementHandler的query方法进行查询，这个query方法中有参数resultsetHandler，说明我们会在这个方法中利用resultHandler对结果进行封装。</p>
+  </li>
+  <li>
+    <p>这个接口有一个抽象模板类叫做BaseStatementHandler，他的两个实现类分别是PreparedStatementHandler和SimpleStatementHandler。这里用到了委托设计模式，通过RoutingStatementHandler中方法判断是statement还是ps，然后根据判断结果，委托给不同的实现类去做。</p>
+
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">private</span> <span class="kt">boolean</span> <span class="nf">judgeStatementType</span><span class="o">(){</span>
+    <span class="k">if</span><span class="o">(</span><span class="n">configuration</span><span class="o">.</span><span class="na">getSql</span><span class="o">().</span><span class="na">contains</span><span class="o">(</span><span class="s">"$"</span><span class="o">))</span>
+        <span class="k">return</span> <span class="kc">false</span><span class="o">;</span><span class="c1">//statement</span>
+    <span class="k">return</span> <span class="kc">true</span><span class="o">;</span><span class="c1">//preparedStatement</span>
+<span class="o">}</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>SimpleStatementHandler（SSH）和PreparedStatementHandler（PSH）是有区别的，本质区别就在一个是statement，一个是ps。在这些接口方法中，PSH的parameterize需要setObject，根据变量出现位置来赋值，但是SSH只需要将原来的${id}等标签用字符串替换即可。query方法中，SSH是statement.executeQuery(sql),但是PSH中是ps.executeQuery(),因为SQL已经预编译进去了。prepare方法中，SSH直接从Connection中createStatement，PSH还要将sql处理一下，吧#{id}这样的字符串替换为？。</p>
+
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">StatementHandler</span> <span class="o">{</span>
+    <span class="kt">void</span> <span class="nf">parameterize</span><span class="o">(</span><span class="nc">Statement</span> <span class="n">statement</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">SQLException</span><span class="o">;</span>
+    <span class="o">&lt;</span><span class="no">E</span><span class="o">&gt;</span> <span class="nc">List</span><span class="o">&lt;</span><span class="no">E</span><span class="o">&gt;</span> <span class="nf">query</span><span class="o">(</span><span class="nc">Statement</span> <span class="n">statement</span><span class="o">,</span> <span class="nc">ResultSetHandler</span> <span class="n">resultSetHandler</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span><span class="o">;</span>
+    <span class="nc">ParameterHandler</span> <span class="nf">getParameterHandler</span><span class="o">();</span>
+    <span class="nc">Statement</span> <span class="nf">prepare</span><span class="o">(</span><span class="nc">Connection</span> <span class="n">connection</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">SQLException</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h3 id="parameterhandler">ParameterHandler</h3>
+
+<ol>
+  <li>先写了一个工具类ParametersUtil，用于将类似#{id},${name}的标签解析成Map，key为变量名，value为出现的位置编号，以便于以后的拓展，目前为了方便，我还是按照顺序进行赋值的，而不是根据名称。如果日后方法中传入参数是对象，那么就可以用BeanUtil将对象转换成map，然后将map和此处的map进行对应，找出变量名所对应的位置，然后用setObject放过去。</li>
+</ol>
+
+<h3 id="resultsethandler">ResultsetHandler</h3>
+
+<ol>
+  <li>
+    <p>这边基本就是CoreFunction中的代码，首先获得ResultSet，然后将结果集封装成map，通过beanUtil将map转化为bean。</p>
+
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Data</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">DefaultResultHandler</span> <span class="kd">implements</span> <span class="nc">ResultSetHandler</span><span class="o">{</span>
+   
+    <span class="kd">private</span> <span class="nc">Configuration</span> <span class="n">configuration</span><span class="o">;</span>
+   
+    <span class="kd">public</span> <span class="nf">DefaultResultHandler</span><span class="o">(</span><span class="nc">Configuration</span> <span class="n">configuration</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">configuration</span> <span class="o">=</span> <span class="n">configuration</span><span class="o">;</span>
+    <span class="o">}</span>
+   
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="o">&lt;</span><span class="no">E</span><span class="o">&gt;</span> <span class="nc">List</span><span class="o">&lt;</span><span class="no">E</span><span class="o">&gt;</span> <span class="nf">handleResultSets</span><span class="o">(</span><span class="nc">Statement</span> <span class="n">statement</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+        <span class="nc">List</span><span class="o">&lt;</span><span class="no">E</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;</span><span class="no">E</span><span class="o">&gt;();</span>
+        <span class="nc">ResultSet</span> <span class="n">rs</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="k">if</span><span class="o">(</span><span class="n">statement</span> <span class="k">instanceof</span> <span class="nc">PreparedStatement</span><span class="o">){</span>
+            <span class="nc">PreparedStatement</span> <span class="n">ps</span> <span class="o">=</span> <span class="o">(</span><span class="nc">PreparedStatement</span><span class="o">)</span><span class="n">statement</span><span class="o">;</span>
+            <span class="n">rs</span> <span class="o">=</span> <span class="n">ps</span><span class="o">.</span><span class="na">executeQuery</span><span class="o">();</span>
+            <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"preparedStatement"</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="k">else</span><span class="o">{</span>
+            <span class="nc">String</span> <span class="n">sql</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">getConfiguration</span><span class="o">().</span><span class="na">getSql</span><span class="o">();</span>
+            <span class="n">rs</span> <span class="o">=</span> <span class="n">statement</span><span class="o">.</span><span class="na">executeQuery</span><span class="o">(</span><span class="n">sql</span><span class="o">);</span>
+            <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"statement"</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="nc">ResultSetMetaData</span> <span class="n">rsmd</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="na">getMetaData</span><span class="o">();</span>
+        <span class="nc">Class</span> <span class="n">resultClazz</span> <span class="o">=</span> <span class="n">configuration</span><span class="o">.</span><span class="na">getResultClass</span><span class="o">();</span>
+        <span class="nc">Object</span> <span class="n">resBean</span> <span class="o">=</span> <span class="n">resultClazz</span><span class="o">.</span><span class="na">newInstance</span><span class="o">();</span>
+        <span class="nc">Field</span><span class="o">[]</span> <span class="n">fields</span> <span class="o">=</span> <span class="n">resultClazz</span><span class="o">.</span><span class="na">getDeclaredFields</span><span class="o">();</span>
+        <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span><span class="nc">Object</span><span class="o">&gt;</span> <span class="n">map</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashMap</span><span class="o">&lt;&gt;();</span>
+        <span class="k">while</span> <span class="o">(</span><span class="n">rs</span><span class="o">.</span><span class="na">next</span><span class="o">()){</span>
+            <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">rsmd</span><span class="o">.</span><span class="na">getColumnCount</span><span class="o">();</span><span class="n">i</span><span class="o">++){</span>
+                <span class="nc">String</span> <span class="n">name</span> <span class="o">=</span> <span class="n">rsmd</span><span class="o">.</span><span class="na">getColumnLabel</span><span class="o">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="o">);</span>
+                <span class="k">for</span><span class="o">(</span><span class="nc">Field</span> <span class="nl">field:</span><span class="n">fields</span><span class="o">){</span>
+                    <span class="k">if</span><span class="o">(</span><span class="n">field</span><span class="o">.</span><span class="na">getName</span><span class="o">().</span><span class="na">equals</span><span class="o">(</span><span class="n">name</span><span class="o">)){</span>
+                        <span class="nc">Object</span> <span class="n">object</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="na">getObject</span><span class="o">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="o">);</span>
+                        <span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">name</span><span class="o">,</span><span class="n">object</span><span class="o">);</span>
+                        <span class="k">break</span><span class="o">;</span>
+                    <span class="o">}</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+            <span class="k">try</span> <span class="o">{</span>
+                <span class="nc">BeanUtils</span><span class="o">.</span><span class="na">populate</span><span class="o">(</span><span class="n">resBean</span><span class="o">,</span><span class="n">map</span><span class="o">);</span>
+            <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">IllegalAccessException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+            <span class="o">}</span>
+            <span class="n">list</span><span class="o">.</span><span class="na">add</span><span class="o">((</span><span class="no">E</span><span class="o">)</span><span class="n">resBean</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">list</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h2 id="停更通知">停更通知</h2>
+
+<ul>
+  <li>目前实现功能：1.基于Mapper接口和动态代理 2.仅支持单条查询，具有基本ORM能力 3.数据源可配置 4.支持${}与#{}两种配置模式，防止sql注入 5.实现SqlSession、Executor、StatementHandler、ParameterHandler、ResultSetHandler等Mybatis组件。</li>
+  <li>我想做的还有1.可变SQL 2.支持多表ORM。3.支持拦截器 4，支持缓存</li>
+</ul>
+
+  </section>
+</article>
+
+<section class="read-more">
+   
+   
+   
+   
+   <div class="read-more-item">
+       <span class="read-more-item-dim">更早的文章</span>
+       <h2 class="post-list__post-title post-title"><a href="/2019/10/small-spring%E5%AE%9E%E7%8E%B0/" title="link to 不如写个small-Spring">不如写个small-Spring</a></h2>
+       <p class="excerpt">IOC  https://mp.weixin.qq.com/s?__biz=MzI4Njg5MDA5NA==&amp;mid=2247484247&amp;idx=1&amp;sn=e228e29e344559e469ac3ecfa9715217&amp;chksm=ebd74256dca0cb40059f3f627fc9450f916c1e1b39ba741842d91774f5bb7f518063e5acf5a0#rd为什么要有IOC？  https://www.zhihu.com/q...&hellip;</p>
+       <div class="post-list__meta"><time datetime="2019-10-20 00:00:00 +0800" class="post-list__meta--date date">2019-10-20</time> &#8226; <span class="post-list__meta--tags tags">Spring</span><a class="btn-border-small" href=/2019/10/small-spring%E5%AE%9E%E7%8E%B0/>继续阅读</a></div>
+   </div>
+   
+</section>
+
+<!-- <section class="post-comments">
+  
+    <div id="disqus_thread"></div>
+    <script>
+    
+    var disqus_config = function () {
+        this.page.url = "http://localhost:4000/2019/10/small-mybatis%E5%AE%9E%E7%8E%B0/";
+        this.page.identifier = "/2019/10/small-mybatis%E5%AE%9E%E7%8E%B0/";
+    };
+
+    var disqus_shortname = 'vno-jekyll';
+    
+    (function() { // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+    </script>
+    <noscript>要查看<a href="http://disqus.com/?ref_noscript"> Disqus </a>评论，请启用 JavaScript</noscript>
+    
+  
+  
+  
+  
+</section>
+
+ -->
+           <!--  <section class="footer">
+    <footer>
+    	<span class="footer__copyright">本站点采用<a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享 署名-非商业性使用-相同方式共享 4.0 国际 许可协议</a></span>
+        <span class="footer__copyright">由 <a href="https://jekyllrb.com">Jekyll</a> 于 2019-10-22 生成，感谢 <a href="https://www.digitalocean.com/?refcode=30ed2d146762">Digital Ocean</a> 为本站提供稳定的 VPS 服务</span>
+        <span class="footer__copyright">本站采用 <a href="https://github.com/onevcat/vno-jekyll">Vno - Jekyll</a> 作为主题，您可以在 GitHub 找到<a href="https://github.com/onevcat/OneV-s-Den">本站源码</a> - &copy; 2019</span>
+    </footer>
+</section>
+ -->
+        </div>
+    </div>
+    
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+
+<script type="text/javascript" src="/js/main.js"></script>
+
+
+
+    
+  </body>
+
+</html>
